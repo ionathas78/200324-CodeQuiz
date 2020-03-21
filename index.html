@@ -3,12 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="stylesheet" type="text/css" href=".Assets/reset.css">
     <link rel="stylesheet" type="text/css" href="./Assets/style.css">
-    <title>Code Quiz</title>
+    
+    <title>codeQuiz</title>
 </head>
 <body>
-    
+    <header>
+        <nav>
+            <ul>
+                <li class="nav-head">codeQuiz</li>
+                <li><a href="#" target="_blank">About</a></li>
+                <li><a href="#" target="_blank">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="top-block"><p> </p></section>
+        <section class="title-block">
+            <h1>Question #<span id="question-number">1</span> out of <span id="question-total">10</span>:</h1>            
+        </section>
+        <hr>
+        <section class="question-text">
+            <p>How much wood would a woodchuck chuck if a woodchuck could chuck wood?</p>
+        </section>
+        <section class="multiple-choice">
+            <ol class="answer-list">
+                <li class="answer-item answer-item-odd" id="answer1">A metric butt-ton of wood</li>
+                <li class="answer-item answer-item-even" id="answer2">A lot of wood</li>
+                <li class="answer-item answer-item-odd" id="answer3">Some wood</li>
+                <li class="answer-item answer-item-even" id="answer4">A little wood</li>
+                <li class="answer-item answer-item-odd" id="answer5">No wood</li>                
+            </ol>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; Copyright 2020, Jonathan Andrews</p>
+    </footer>
+
     <script type="text/javascript" src="./Assets/script.js"></script>
 </body>
 </html>

@@ -1,20 +1,22 @@
 //  **  Declarations
+const _choicePrefix = "opt";
 
-var clickListener, keydownListener;
-var questionArray = [];
-var questionIndex = -1;
+var _clickListener, _keydownListener;
+var _questionArray = [];
+var _questionIndex = -1;
+var _correctCount = 0;
 
 //  **  Functions
 
 function main() {
     
-    questionArray = initQuestionList();
-    console.log(questionArray);
+    _questionArray = initQuestionList();
+    console.log(_questionArray);
 
     debugger;
 
-    questionIndex++;
-    renderQuestion(questionIndex);
+    _questionIndex++;
+    renderQuestion(_questionIndex);
 
     // GIVEN I am taking a code quiz
 
@@ -35,6 +37,7 @@ function main() {
 
 }
 
+//  Sets up the list of questions to ask.
 function initQuestionList () {
     var returnArray = [];
 
@@ -50,14 +53,15 @@ function initQuestionList () {
     indexArray = shuffleArray(indexArray);
         
     for (var j = 0; j < questionLength; j++) {
-        returnArray.push(questions[j]);
+        returnArray.push(questions[indexArray[j]]);
     }
 
     return returnArray;
 }
 
-function renderQuestion (questionIndex) {
-    var questionObject = questionArray[questionIndex];
+//  Redraws the screen and displays the question in targetIndex.
+function renderQuestion (targetIndex) {
+    var questionObject = _questionArray[targetIndex];
 
     clearAnswerList();
 
@@ -66,9 +70,10 @@ function renderQuestion (questionIndex) {
     var questionNumber = document.getElementById("question-number");
 
     var answerIndex = 0;
-    var newAnswer = questionObject["a" + answerIndex];
+    var newAnswer = questionObject[_choicePrefix + answerIndex];
 
     tagQuestion.textContent = questionObject.question;
+    questionNumber.textContent = targetIndex + 1;
 
     while (newAnswer !== undefined) {
         if (newAnswer != "") {
@@ -76,7 +81,7 @@ function renderQuestion (questionIndex) {
         }
 
         answerIndex++;
-        newAnswer = questionObject["a" + answerIndex];
+        newAnswer = questionObject[_choicePrefix + answerIndex];
     }
 }
 
@@ -90,7 +95,7 @@ function addListAnswer (answerText) {
     var answerList = document.getElementById("answer-list");
 
     var newIndex = answerList.childElementCount;
-    var idAnswer = "answer" + newIndex;
+    var idAnswer = _choicePrefix + newIndex;
     var classAnswer = "answer-item answer-item-";
 
     if (newIndex % 2) {
@@ -103,53 +108,66 @@ function addListAnswer (answerText) {
     
     newElement.id = idAnswer;
     newElement.className = classAnswer;
-    newElement.textContent = answerText;
+    newElement.textContent = newIndex + "  -  " + answerText;
 
     answerList.appendChild(newElement);
 }
 
+//  Completes the question with answer in userPick
+function resolveAnswer(pickIndex) {
+    var msgStatus = "Sorry, no.";
+
+    // highlightPick(pickIndex);
+
+    if (isCorrectAnswer(pickIndex)) {
+        _correctCount++;        
+        msgStatus = "Correct!"
+    } 
+    _questionIndex++;
+
+    renderQuestion(_questionIndex);
+    displayStatus(msgStatus);
+}
+
+//  Returns true if passed index matches the current answer
+function isCorrectAnswer(pickIndex) {
+    var correctIndex = _questionArray[_questionIndex].answer;
+    return (pickIndex == correctIndex);
+}
+
 //  Clears the answer list
 function clearAnswerList () {
+    var questionText = document.getElementById("question-text");
     var answerList = document.getElementById("answer-list");
+    var tagStatus = document.getElementById("status-text");
 
+    questionText.textContent = "  ";
     for (var i = answerList.childElementCount - 1; i > -1; i--) {
         answerList.removeChild(answerList.children[i]);
     }
+    tagStatus.textContent = " ";
 }
 
-//  **  Event Handlers
+//  Recolors the indicated element
+// function highlightPick (pickIndex) {
+//     var pickElement = document.getElementById(_choicePrefix + pickIndex);
 
-//  Catches click events for the answer list
-function clickEventHandler (event) {
-    var targetElement = event.target;
-    var targetClass = targetElement.className;
-    
-    // alert("You clicked " + targetId);
+//     if (pickElement !== null) {
+//         pickElement.style.backgroundColor = "red";
+//         pickElement.style.color = "#eee";
+//     }
+// }
 
-    if (targetClass.indexOf("answer-item") > -1) {
-        event.preventDefault();
-
-        alert("You picked " + targetElement.id);
-    }
-}
-
-//  Catches keydown events that match up with the answer list
-function keydownEventHandler (event) {
-    var keyPressed = event.key;
-    var indexPressed = parseInt(keyPressed);
-    var maxIndex = document.getElementById("answer-list").childElementCount;
-
-    // alert("You pressed " + keyPressed);
-    
-    if ((indexPressed > 0) && (indexPressed <= maxIndex)) {
-        event.preventDefault();
-
-        alert("You picked answer" + indexPressed);
-
-    } else {
+//  Displays the given status
+function displayStatus (textToDisplay) {
+    if (textToDisplay == "") {
         return;
     }
 
+    var tagStatus = document.getElementById("status-text");
+    tagStatus.textContent = textToDisplay;
+
+    // Add intervalTimer
 }
 
 //  **  Fisher-Yates (aka Knuth) shuffle from https://github.com/Daplie/knuth-shuffle
@@ -176,9 +194,46 @@ function shuffleArray(targetArray) {
     return targetArray;
   }
 
+//  **  Event Handlers
+
+//  Catches click events for the answer list
+function clickEventHandler (event) {
+    var targetElement = event.target;
+    var targetClass = targetElement.className;
+    
+    // alert("You clicked " + targetId);
+
+    if (targetClass.indexOf("answer-item") > -1) {
+        event.preventDefault();
+
+        // alert("You picked " + targetElement.id);
+        var pickIndex = targetElement.id.replace(_choicePrefix, "");
+        resolveAnswer(pickIndex);
+    }
+}
+
+//  Catches keydown events that match up with the answer list
+function keydownEventHandler (event) {
+    var keyPressed = event.key;
+    var indexPressed = parseInt(keyPressed);
+    var maxIndex = document.getElementById("answer-list").childElementCount - 1;
+
+    // alert("You pressed " + keyPressed);
+    
+    if ((indexPressed > -1) && (indexPressed <= maxIndex)) {
+        event.preventDefault();
+
+        // alert("You picked answer" + indexPressed);
+        resolveAnswer(indexPressed);
+    } else {
+        return;
+    }
+}
+
+
 //  **  Logic
 
 main();
 
-clickListener = document.addEventListener("click", clickEventHandler);
-keydownListener = document.addEventListener("keydown", keydownEventHandler);
+_clickListener = document.addEventListener("click", clickEventHandler);
+_keydownListener = document.addEventListener("keydown", keydownEventHandler);

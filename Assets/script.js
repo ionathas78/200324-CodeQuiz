@@ -1,10 +1,14 @@
 //  **  Declarations
 
+var clickListener, keydownListener;
+var questionArray = [];
 
 //  **  Functions
 
 function main() {
     
+    questionArray = initQuestionList();
+    console.log(questionArray);
 
     // GIVEN I am taking a code quiz
 
@@ -25,6 +29,103 @@ function main() {
 
 }
 
+function initQuestionList () {
+    var returnArray = [];
+
+    var questions = questionList();
+
+    var questionLength = questions.length;
+    var indexArray = [];
+
+    for (var i = 0; i < questionLength; i++) {
+        indexArray.push(i);
+    }
+
+    indexArray = shuffleArray(indexArray);
+        
+    for (var j = 0; j < questionLength; j++) {
+        returnArray.push(questions[j]);
+    }
+
+    return returnArray;
+}
+
+//  Given text, adds an answer to the bottom of the answer list.
+function addListAnswer (answerText) {
+    if ((answerText == "") || (answerText === null)) {
+        return;
+    }
+
+    var newElement = document.createElement("li");
+    var answerList = document.getElementById("answer-list");
+
+    var newIndex = answerList.childElementCount + 1;
+    newElement.id = "answer" + newIndex;
+    newElement.textContent = answerText;
+}
+
+//  **  Event Handlers
+
+//  Catches click events for the answer list
+function clickEventHandler (event) {
+    var targetElement = event.target;
+    var targetClass = targetElement.className;
+    
+    // alert("You clicked " + targetId);
+
+    if (targetClass.indexOf("answer-item") > -1) {
+        event.preventDefault();
+
+        alert("You picked " + targetElement.id);
+    }
+}
+
+//  Catches keydown events that match up with the answer list
+function keydownEventHandler (event) {
+    var keyPressed = event.key;
+    var indexPressed = parseInt(keyPressed);
+    var maxIndex = document.getElementById("answer-list").childElementCount;
+
+    // alert("You pressed " + keyPressed);
+    
+    if ((indexPressed > 0) && (indexPressed <= maxIndex)) {
+        event.preventDefault();
+
+        alert("You picked answer" + indexPressed);
+
+    } else {
+        return;
+    }
+
+}
+
+//  **  Fisher-Yates (aka Knuth) shuffle from https://github.com/Daplie/knuth-shuffle
+// http://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+function shuffleArray(targetArray) {
+    var currentIndex = targetArray.length
+      , temporaryValue
+      , randomIndex
+      ;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+
+      // And swap it with the current element.
+      temporaryValue = targetArray[currentIndex];
+      targetArray[currentIndex] = targetArray[randomIndex];
+      targetArray[randomIndex] = temporaryValue;
+    }
+
+    return targetArray;
+  }
+
 //  **  Logic
 
 main();
+
+clickListener = document.addEventListener("click", clickEventHandler);
+keydownListener = document.addEventListener("keydown", keydownEventHandler);

@@ -2,6 +2,7 @@
 
 var clickListener, keydownListener;
 var questionArray = [];
+var questionIndex = -1;
 
 //  **  Functions
 
@@ -9,6 +10,11 @@ function main() {
     
     questionArray = initQuestionList();
     console.log(questionArray);
+
+    debugger;
+
+    questionIndex++;
+    renderQuestion(questionIndex);
 
     // GIVEN I am taking a code quiz
 
@@ -50,6 +56,30 @@ function initQuestionList () {
     return returnArray;
 }
 
+function renderQuestion (questionIndex) {
+    var questionObject = questionArray[questionIndex];
+
+    clearAnswerList();
+
+    var tagQuestion = document.getElementById("question-text");
+    var listAnswers = document.getElementById("answer-list");
+    var questionNumber = document.getElementById("question-number");
+
+    var answerIndex = 0;
+    var newAnswer = questionObject["a" + answerIndex];
+
+    tagQuestion.textContent = questionObject.question;
+
+    while (newAnswer !== undefined) {
+        if (newAnswer != "") {
+            addListAnswer (newAnswer);
+        }
+
+        answerIndex++;
+        newAnswer = questionObject["a" + answerIndex];
+    }
+}
+
 //  Given text, adds an answer to the bottom of the answer list.
 function addListAnswer (answerText) {
     if ((answerText == "") || (answerText === null)) {
@@ -59,9 +89,32 @@ function addListAnswer (answerText) {
     var newElement = document.createElement("li");
     var answerList = document.getElementById("answer-list");
 
-    var newIndex = answerList.childElementCount + 1;
-    newElement.id = "answer" + newIndex;
+    var newIndex = answerList.childElementCount;
+    var idAnswer = "answer" + newIndex;
+    var classAnswer = "answer-item answer-item-";
+
+    if (newIndex % 2) {
+        //  Item is odd
+        classAnswer += "odd";
+    } else {
+        //  Item is even
+        classAnswer += "even";
+    }
+    
+    newElement.id = idAnswer;
+    newElement.className = classAnswer;
     newElement.textContent = answerText;
+
+    answerList.appendChild(newElement);
+}
+
+//  Clears the answer list
+function clearAnswerList () {
+    var answerList = document.getElementById("answer-list");
+
+    for (var i = answerList.childElementCount - 1; i > -1; i--) {
+        answerList.removeChild(answerList.children[i]);
+    }
 }
 
 //  **  Event Handlers

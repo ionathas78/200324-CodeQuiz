@@ -2,11 +2,11 @@ function questionList() {
     var questions = [
         {
             question: "To declare a new variable, use what statement?",
-            a1: "decl",
-            a2: "var",
-            a3: "new",
-            a4: "set",
-            a5: "make"
+            a0: "decl",
+            a1: "var",
+            a2: "new",
+            a3: "set",
+            a4: "make"
         }
     ]
 

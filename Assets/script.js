@@ -1,17 +1,30 @@
 //  **  Declarations
+const _GAME_STARTTIME_SECONDS = 60;
 const _BASE_QUESTIONSCORE = 1000;
+const _TIME_SCOREPENALTY = 100;
+const _MIN_SCOREPENALTY = -250;
+const _CORRECT_TIMEBONUS = 3;
+const _INCORRECT_TIMEPENALTY = 5;
+
+const _1SECOND = 1000;
 
 var _clickListener, _keydownListener;
+var _intervalTimer;
+
 var _questionArray = [];
 var _questionIndex = -1;
 var _correctCount = 0;
-var _masterTimer = 0;
+var _userScore = 0;
+var _masterTimer = _GAME_STARTTIME_SECONDS;
 var _questionTimer = 0;
 
-//
-//  Also uses the _CHOICE_PREFIX, _QUESTION_NAME, and _ANSWER_NAME consts
-//      and functionList() from the questionSet module
-//
+var _timerTag = document.getElementById("game-timer");
+
+//  these and the functionList() function from the questionSet module.
+var _questionName = _QUESTION_NAME;
+var _choicePrefix = _CHOICE_PREFIX;
+var _answerName = _ANSWER_NAME;
+
 
 //
 //  _masterTimer is the overall countdown clock for the entire session.
@@ -57,40 +70,56 @@ function main() {
 
 //  Sets up the list of questions to ask.
 function initQuestionList () {
-    var returnArray = [];
+    let returnArray = [];
 
-    var questions = questionList();
+    let questions = questionList();
 
-    var questionLength = questions.length;
-    var indexArray = [];
+    let questionLength = questions.length;
+    let indexArray = [];
 
-    for (var i = 0; i < questionLength; i++) {
+    for (let i = 0; i < questionLength; i++) {
         indexArray.push(i);
     }
 
     indexArray = shuffleArray(indexArray);
         
-    for (var j = 0; j < questionLength; j++) {
+    for (let j = 0; j < questionLength; j++) {
         returnArray.push(questions[indexArray[j]]);
     }
 
     return returnArray;
 }
 
+function endGame() {
+    let msgEnd = "";
+
+    let tagQuestion = document.getElementById("question-text");
+    tagQuestion.textContent = "";
+    clearAnswerList();
+
+    //                  SCORE
+    //                  XXXXX
+    //
+    //  --------------------------------------
+    //  Congratulations! You scored xth place!
+    //        User Name: ______________
+
+}
+
 //  Redraws the screen and displays the question in targetIndex.
 function renderQuestion (targetIndex) {
-    var questionObject = _questionArray[targetIndex];
+    let questionObject = _questionArray[targetIndex];
 
     clearAnswerList();
 
-    var tagQuestion = document.getElementById("question-text");
-    var listAnswers = document.getElementById("answer-list");
-    var questionNumber = document.getElementById("question-number");
+    let tagQuestion = document.getElementById("question-text");
+    let listAnswers = document.getElementById("answer-list");
+    let questionNumber = document.getElementById("question-number");
 
-    var answerIndex = 0;
-    var newAnswer = questionObject[_CHOICE_PREFIX + answerIndex];
+    let answerIndex = 0;
+    let newAnswer = questionObject[_choicePrefix + answerIndex];
 
-    tagQuestion.textContent = questionObject[_QUESTION_NAME];
+    tagQuestion.textContent = questionObject[_questionName];
     questionNumber.textContent = targetIndex + 1;
 
     while (newAnswer !== undefined) {
@@ -99,7 +128,7 @@ function renderQuestion (targetIndex) {
         }
 
         answerIndex++;
-        newAnswer = questionObject[_CHOICE_PREFIX + answerIndex];
+        newAnswer = questionObject[_choicePrefix + answerIndex];
     }
 }
 
@@ -109,12 +138,12 @@ function addListAnswer (answerText) {
         return;
     }
 
-    var newElement = document.createElement("li");
-    var answerList = document.getElementById("answer-list");
+    let newElement = document.createElement("li");
+    let answerList = document.getElementById("answer-list");
 
-    var newIndex = answerList.childElementCount;
-    var idAnswer = _CHOICE_PREFIX + newIndex;
-    var classAnswer = "answer-item answer-item-";
+    let newIndex = answerList.childElementCount;
+    let idAnswer = _choicePrefix + newIndex;
+    let classAnswer = "answer-item answer-item-";
 
     if (newIndex % 2) {
         //  Item is odd
@@ -133,48 +162,58 @@ function addListAnswer (answerText) {
 
 //  Completes the question with answer in userPick
 function resolveAnswer(pickIndex) {
-    var msgStatus = "Sorry, no.";
+    let msgStatus = "";
 
-    // highlightPick(pickIndex);
+    let correctIndex = _questionArray[_questionIndex][_answerName];
+    if (pickIndex == correctIndex) {
+        applyCorrectAnswer();
+        msgStatus = "Correct!";
+    } else {
+        applyWrongAnswer();
+        msgStatus = "Sorry, no.";
+    }
 
-    if (isCorrectAnswer(pickIndex)) {
-        _correctCount++;        
-        msgStatus = "Correct!"
-    } 
+    _questionTimer = 0;
     _questionIndex++;
 
     renderQuestion(_questionIndex);
     displayStatus(msgStatus);
 }
 
-//  Returns true if passed index matches the current answer
-function isCorrectAnswer(pickIndex) {
-    var correctIndex = _questionArray[_questionIndex][_ANSWER_NAME];
-    return (pickIndex == correctIndex);
+//  Modifies variables for score and count
+function applyCorrectAnswer() {
+    let questionScore = _BASE_QUESTIONSCORE - (_questionTimer * _TIME_SCOREPENALTY);
+    if (questionScore > 0) {
+        _userScore += questionScore;
+    };
+
+    _correctCount++;
+    _masterTimer += _CORRECT_TIMEBONUS;
+}
+
+//  Modifies variables for score and count
+function applyWrongAnswer() {
+    let questionScore = Math.floor((_BASE_QUESTIONSCORE - (_questionTimer * _TIME_SCOREPENALTY)) * (-1/2))
+    if (questionScore > _MIN_SCOREPENALTY) {
+        questionScore = _MIN_SCOREPENALTY;
+    }
+    _userScore += questionScore;
+
+    _masterTimer -= _INCORRECT_TIMEPENALTY;
 }
 
 //  Clears the answer list
 function clearAnswerList () {
-    var questionText = document.getElementById("question-text");
-    var answerList = document.getElementById("answer-list");
-    var tagStatus = document.getElementById("status-text");
+    let questionText = document.getElementById("question-text");
+    let answerList = document.getElementById("answer-list");
+    let tagStatus = document.getElementById("status-text");
 
     questionText.textContent = "  ";
-    for (var i = answerList.childElementCount - 1; i > -1; i--) {
+    for (let i = answerList.childElementCount - 1; i > -1; i--) {
         answerList.removeChild(answerList.children[i]);
     }
     tagStatus.textContent = " ";
 }
-
-//  Recolors the indicated element
-// function highlightPick (pickIndex) {
-//     var pickElement = document.getElementById(_CHOICE_PREFIX + pickIndex);
-
-//     if (pickElement !== null) {
-//         pickElement.style.backgroundColor = "red";
-//         pickElement.style.color = "#eee";
-//     }
-// }
 
 //  Displays the given status
 function displayStatus (textToDisplay) {
@@ -182,7 +221,7 @@ function displayStatus (textToDisplay) {
         return;
     }
 
-    var tagStatus = document.getElementById("status-text");
+    let tagStatus = document.getElementById("status-text");
     tagStatus.textContent = textToDisplay;
 
     // Add intervalTimer
@@ -191,7 +230,7 @@ function displayStatus (textToDisplay) {
 //  **  Fisher-Yates (aka Knuth) shuffle from https://github.com/Daplie/knuth-shuffle
 // http://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
 function shuffleArray(targetArray) {
-    var currentIndex = targetArray.length
+    let currentIndex = targetArray.length
       , temporaryValue
       , randomIndex
       ;
@@ -216,8 +255,8 @@ function shuffleArray(targetArray) {
 
 //  Catches click events for the answer list
 function clickEventHandler (event) {
-    var targetElement = event.target;
-    var targetClass = targetElement.className;
+    let targetElement = event.target;
+    let targetClass = targetElement.className;
     
     // alert("You clicked " + targetId);
 
@@ -225,16 +264,16 @@ function clickEventHandler (event) {
         event.preventDefault();
 
         // alert("You picked " + targetElement.id);
-        var pickIndex = targetElement.id.replace(_CHOICE_PREFIX, "");
+        let pickIndex = targetElement.id.replace(_choicePrefix, "");
         resolveAnswer(pickIndex);
     }
 }
 
 //  Catches keydown events that match up with the answer list
 function keydownEventHandler (event) {
-    var keyPressed = event.key;
-    var indexPressed = parseInt(keyPressed);
-    var maxIndex = document.getElementById("answer-list").childElementCount - 1;
+    let keyPressed = event.key;
+    let indexPressed = parseInt(keyPressed);
+    let maxIndex = document.getElementById("answer-list").childElementCount - 1;
 
     // alert("You pressed " + keyPressed);
     
@@ -248,6 +287,36 @@ function keydownEventHandler (event) {
     }
 }
 
+//  Counts down the master timer and up the question timer
+function secondsTimer () {
+    _masterTimer--;
+    _questionTimer++;
+
+    let timerSeconds = _masterTimer % 60;
+    let stringSeconds = timerSeconds.toString();
+    if (stringSeconds.length = 1) {
+        stringSeconds = "0" + stringSeconds;
+    }
+
+    let timerMinutes = Math.floor(_masterTimer / 60);
+    let stringMinutes = timerMinutes.toString();
+    if (stringMinutes.length = 1) {
+        stringMinutes = "0" + stringMinutes;
+    }
+
+    _timerTag.textContent = stringSeconds + ":" + stringMinutes;
+
+    if (_masterTimer == 0) {
+        clearInterval(_intervalTimer);
+        endGame();
+    }
+
+    if (_masterTimer > 15) {
+        _timerTag.style.color = "Black";
+    } else {
+        _timerTag.style.color = "Red";
+    }
+}
 
 //  **  Logic
 
@@ -255,3 +324,4 @@ main();
 
 _clickListener = document.addEventListener("click", clickEventHandler);
 _keydownListener = document.addEventListener("keydown", keydownEventHandler);
+_intervalTimer = setInterval(() => {secondsTimer();}, _1SECOND);

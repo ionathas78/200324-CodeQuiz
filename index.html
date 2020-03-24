@@ -10,6 +10,15 @@
     <title>codeQuiz</title>
 </head>
 <body>
+    <section class="background">
+        <!-- Motion Background from https://wweb.dev/resources/animated-css-background-generator -->
+        <!-- Credit: Louis Hoebregts -->
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </section>
+
     <header>
         <nav>
             <ul>
@@ -22,8 +31,10 @@
 
     <main>
         <section class="top-block"><p> </p></section>
-        <section class="title-block">
-            <h1>Question #<span id="question-number">1</span>:</h1>            
+        <section class="marquee-block">
+            <h1 class="marquee-header">Question #<span id="question-number">1</span>:</h1>
+            <h1 class="marquee-center" id="game-score">0</h1>
+            <h1 class="marquee-timer" id="game-timer">00:00</h1>
         </section>
         <hr>
         <section class="question-text" id="question-text">
@@ -47,6 +58,48 @@
         <p>&copy; Copyright 2020, Jonathan Andrews</p>
     </footer>
 
+    <section class="end-popup">
+        <div class="form-popup" id="popupForm">
+          <form class="form-container">
+            <h2>Password Options</h2>
+            <hr>
+  
+            <article class="input-container">
+              <label for="length" id="length-label" class="input-label">
+                <strong>How many characters?</strong>
+              </label>
+              <input type="text" id="length" placeholder="8 - 128" name="length">
+            </article>
+  
+            <article class="check-container">
+              <input type="checkbox" id="case-sensitive" class="pop-check">
+              <label for="case-sensitive" class="check-label">
+                <strong>Case Sensitive?</strong>
+              </label>
+            </article>
+            
+            <article class="check-container">
+              <input type="checkbox" id="include-numbers" class="pop-check">
+              <label for="include-numbers" class="check-label">
+                <strong>Include Numbers?</strong>
+              </label>
+            </article>
+            
+            <article class="check-container">
+              <input type="checkbox" id="include-special" class="pop-check">
+              <label for="include-special" class="check-label">
+                <strong>Include Special Characters?</strong>
+              </label>
+            </article> 
+            
+            <article class="button-container">
+              <button type="submit" id="runGenerator" class="pop-btn">Run</button>
+              <button type="button" id="cancelForm" class="pop-btn cancel">Close</button>
+            </article> 
+          </form>
+        </div>
+      </section>
+  
     <script type="text/javascript" src="./Assets/questionSet.js"></script>
     <script type="text/javascript" src="./Assets/script.js"></script>
 </body>

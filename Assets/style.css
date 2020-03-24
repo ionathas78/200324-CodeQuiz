@@ -80,6 +80,7 @@ footer {
 .question-text {
     font-size: 1rem;
     margin: 20px 25px;
+    border: 0 none;
 }
 
 .answer-list {
@@ -108,4 +109,24 @@ footer {
     font-style: italic;
     margin: 20px 25px;
     color: #333;
+}
+
+.answer-item:hover {
+    border-width: 1px 3px 3px 1px;
+    border-style: solid;
+    border-color: #999;
+}
+
+.answer-item:active {
+    background-color: #ccc;
+    color: #222;
+}
+
+.nav-item:hover {
+    background-color: #228;
+}
+
+.nav-item:active {
+    background-color: #55b;
+    color: #222;
 }

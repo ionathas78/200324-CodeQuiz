@@ -1,3 +1,7 @@
+const _QUESTION_NAME = "question";
+const _CHOICE_PREFIX = "opt";
+const _ANSWER_NAME = "answer";
+
 function questionList() {
     var questions = [
         {

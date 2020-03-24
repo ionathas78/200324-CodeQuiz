@@ -1,10 +1,28 @@
 //  **  Declarations
-const _choicePrefix = "opt";
+const _BASE_QUESTIONSCORE = 1000;
 
 var _clickListener, _keydownListener;
 var _questionArray = [];
 var _questionIndex = -1;
 var _correctCount = 0;
+var _masterTimer = 0;
+var _questionTimer = 0;
+
+//
+//  Also uses the _CHOICE_PREFIX, _QUESTION_NAME, and _ANSWER_NAME consts
+//      and functionList() from the questionSet module
+//
+
+//
+//  _masterTimer is the overall countdown clock for the entire session.
+//  _questionTimer tracks the user's time for each question.
+//
+//  Score for a particular question begins at 1,000.
+//      Each second reduces the question's score by 100.
+//      On a correct answer, the user's score goes up by the remaining score.
+//      On an incorrect answer, the user's score goes down by 1/2 the remaining score, to a minimum of zero.
+//      That way, people get higher scores for answering quickly, but they also risk losing more points if they're wrong.
+//
 
 //  **  Functions
 
@@ -70,9 +88,9 @@ function renderQuestion (targetIndex) {
     var questionNumber = document.getElementById("question-number");
 
     var answerIndex = 0;
-    var newAnswer = questionObject[_choicePrefix + answerIndex];
+    var newAnswer = questionObject[_CHOICE_PREFIX + answerIndex];
 
-    tagQuestion.textContent = questionObject.question;
+    tagQuestion.textContent = questionObject[_QUESTION_NAME];
     questionNumber.textContent = targetIndex + 1;
 
     while (newAnswer !== undefined) {
@@ -81,7 +99,7 @@ function renderQuestion (targetIndex) {
         }
 
         answerIndex++;
-        newAnswer = questionObject[_choicePrefix + answerIndex];
+        newAnswer = questionObject[_CHOICE_PREFIX + answerIndex];
     }
 }
 
@@ -95,7 +113,7 @@ function addListAnswer (answerText) {
     var answerList = document.getElementById("answer-list");
 
     var newIndex = answerList.childElementCount;
-    var idAnswer = _choicePrefix + newIndex;
+    var idAnswer = _CHOICE_PREFIX + newIndex;
     var classAnswer = "answer-item answer-item-";
 
     if (newIndex % 2) {
@@ -131,7 +149,7 @@ function resolveAnswer(pickIndex) {
 
 //  Returns true if passed index matches the current answer
 function isCorrectAnswer(pickIndex) {
-    var correctIndex = _questionArray[_questionIndex].answer;
+    var correctIndex = _questionArray[_questionIndex][_ANSWER_NAME];
     return (pickIndex == correctIndex);
 }
 
@@ -150,7 +168,7 @@ function clearAnswerList () {
 
 //  Recolors the indicated element
 // function highlightPick (pickIndex) {
-//     var pickElement = document.getElementById(_choicePrefix + pickIndex);
+//     var pickElement = document.getElementById(_CHOICE_PREFIX + pickIndex);
 
 //     if (pickElement !== null) {
 //         pickElement.style.backgroundColor = "red";
@@ -207,7 +225,7 @@ function clickEventHandler (event) {
         event.preventDefault();
 
         // alert("You picked " + targetElement.id);
-        var pickIndex = targetElement.id.replace(_choicePrefix, "");
+        var pickIndex = targetElement.id.replace(_CHOICE_PREFIX, "");
         resolveAnswer(pickIndex);
     }
 }

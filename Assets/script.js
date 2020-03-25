@@ -1,5 +1,7 @@
 //  **  Declarations
-const _GAME_STARTTIME_SECONDS = 60;
+// const _GAME_STARTTIME_SECONDS = 60;
+const _GAME_STARTTIME_SECONDS = 6;
+
 const _BASE_QUESTIONSCORE = 1000;
 const _TIME_SCOREPENALTY = 100;
 const _MIN_SCOREPENALTY = -250;
@@ -7,9 +9,11 @@ const _CORRECT_TIMEBONUS = 3;
 const _INCORRECT_TIMEPENALTY = 5;
 
 const _1SECOND = 1000;
+const _LOCALSTORAGE_NAME = "topTenList";
 
-var _clickListener, _keydownListener;
+var _clickListener, _keydownListener
 var _intervalTimer;
+var _topTenList = [];
 
 var _questionArray = [];
 var _questionIndex = -1;
@@ -19,6 +23,7 @@ var _masterTimer = _GAME_STARTTIME_SECONDS;
 var _questionTimer = 0;
 
 var _timerTag = document.getElementById("game-timer");
+var _scoreTag = document.getElementById("game-score");
 
 //  these and the functionList() function from the questionSet module.
 var _questionName = _QUESTION_NAME;
@@ -44,7 +49,7 @@ function main() {
     _questionArray = initQuestionList();
     console.log(_questionArray);
 
-    debugger;
+    // debugger;
 
     _questionIndex++;
     renderQuestion(_questionIndex);
@@ -97,13 +102,68 @@ function endGame() {
     tagQuestion.textContent = "";
     clearAnswerList();
 
-    //                  SCORE
-    //                  XXXXX
-    //
-    //  --------------------------------------
-    //  Congratulations! You scored xth place!
-    //        User Name: ______________
+    openForm();
 
+}
+
+function initTopTen() {
+    var defaultTopTen = [
+        {name: "ZUL", score: 10000},
+        {name: "KIL", score: 9000},
+        {name: "EVE", score: 8000},
+        {name: "JOB", score: 7000},
+        {name: "HAM", score: 6000},
+        {name: "DAN", score: 5000},
+        {name: "RAM", score: 4000},
+        {name: "ELI", score: 3000},
+        {name: "ASA", score: 2000},
+        {name: "LOT", score: 1000}
+    ]
+    var stringTopTen = JSON.stringify(defaultTopTen);
+    localStorage.setItem(_LOCALSTORAGE_NAME, stringTopTen);
+
+    return defaultTopTen;
+}
+
+function isInTopTen () {
+    let returnValue = false;
+
+    let topTen = localStorage.getItem(_LOCALSTORAGE_NAME);
+    if (topTen === null) {
+        topTen = initTopTen();
+    }
+
+    _topTenList = JSON.parse(topTen);
+
+    if (_topTenList.length < 10) {
+        returnValue = true;
+    
+    } else {
+        for (var i = 0; i < _topTenList.length; i++) {
+            let element = _topTenList[i];
+            if (element.score < _userScore) {
+                returnValue = true;
+                break;
+            }
+        }
+    }
+    
+    return returnValue;
+}
+
+function addToTopTen (userInitials) {
+    let newHiScore = {name: userInitials, score: _userScore};
+    let topTenToStore;
+
+    _topTenList.push(newHiScore);
+
+    _topTenList = _topTenList.sort(function(a, b) {return (b.score - a.score);});
+    if (_topTenList.length > 10) {
+        _topTenList.pop();
+    }
+    
+    topTenToStore = JSON.stringify(_topTenList);
+    localStorage.setItem(_LOCALSTORAGE_NAME, topTenToStore);
 }
 
 //  Redraws the screen and displays the question in targetIndex.
@@ -173,11 +233,12 @@ function resolveAnswer(pickIndex) {
         msgStatus = "Sorry, no.";
     }
 
-    _questionTimer = 0;
     _questionIndex++;
 
     renderQuestion(_questionIndex);
     displayStatus(msgStatus);
+
+    _questionTimer = 0;
 }
 
 //  Modifies variables for score and count
@@ -199,7 +260,11 @@ function applyWrongAnswer() {
     }
     _userScore += questionScore;
 
-    _masterTimer -= _INCORRECT_TIMEPENALTY;
+    if (_masterTimer > _INCORRECT_TIMEPENALTY) {
+        _masterTimer -= _INCORRECT_TIMEPENALTY;
+    } else {
+        _masterTimer = 0;
+    }
 }
 
 //  Clears the answer list
@@ -251,21 +316,44 @@ function shuffleArray(targetArray) {
     return targetArray;
   }
 
+  //  Set popup visibility
+function openForm() {
+    document.getElementById("popupForm").style.display="block";
+    document.getElementById("score-display").textContent = _userScore.toString();
+
+    if (isInTopTen()) {
+        document.getElementById("top-ten").style.display = "block";    
+    } else {
+        document.getElementById("top-ten").style.display = "none";
+    }
+
+}
+
+  //  Set popup visibility
+function closeForm() {
+    let userInitials = document.getElementById("initials").value
+    if (userInitials !== null) {
+        addToTopTen(userInitials);
+    }
+    document.getElementById("popupForm").style.display="none";
+}
+  
 //  **  Event Handlers
 
 //  Catches click events for the answer list
 function clickEventHandler (event) {
     let targetElement = event.target;
     let targetClass = targetElement.className;
+    let targetId = targetElement.id;
     
-    // alert("You clicked " + targetId);
-
     if (targetClass.indexOf("answer-item") > -1) {
         event.preventDefault();
-
-        // alert("You picked " + targetElement.id);
         let pickIndex = targetElement.id.replace(_choicePrefix, "");
         resolveAnswer(pickIndex);
+
+    } else if (targetId == "closeButton") {
+        event.preventDefault();
+        closeForm();
     }
 }
 
@@ -275,22 +363,26 @@ function keydownEventHandler (event) {
     let indexPressed = parseInt(keyPressed);
     let maxIndex = document.getElementById("answer-list").childElementCount - 1;
 
-    // alert("You pressed " + keyPressed);
-    
     if ((indexPressed > -1) && (indexPressed <= maxIndex)) {
         event.preventDefault();
-
-        // alert("You picked answer" + indexPressed);
         resolveAnswer(indexPressed);
+        
+    } else if ((event.target.id == "initials") && (event.keyCode == 15)) {           //  Carriage Return
+        event.preventDefault();
+        closeForm();
+        
     } else {
         return;
     }
 }
 
+
 //  Counts down the master timer and up the question timer
 function secondsTimer () {
-    _masterTimer--;
-    _questionTimer++;
+    if (_masterTimer > 0) {
+        _masterTimer--;
+        _questionTimer++;
+    }
 
     let timerSeconds = _masterTimer % 60;
     let stringSeconds = timerSeconds.toString();
@@ -305,8 +397,9 @@ function secondsTimer () {
     }
 
     _timerTag.textContent = stringSeconds + ":" + stringMinutes;
+    _scoreTag.textContent = _userScore;
 
-    if (_masterTimer == 0) {
+    if (_masterTimer <= 0) {
         clearInterval(_intervalTimer);
         endGame();
     }

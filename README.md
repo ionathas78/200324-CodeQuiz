@@ -3,6 +3,11 @@
 > I wanted to make a fun game to quiz students on JavaScript essentials.
 > This is my result.
 
+I wanted to make a dynamic, mobile-responsive quiz game that would have exciting rules, where the 
+question / answer set would be completely modular and independent of the game code. Ideally, I 
+wanted to implement different levels of difficulty that would have different start times and 
+point schedules, with separate high score tables for each level. I didn't have quite enough time 
+to code that. Maybe next time...
 
 ## User Story
 

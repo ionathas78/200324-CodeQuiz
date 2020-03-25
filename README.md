@@ -31,4 +31,4 @@ THEN I can save my initials and score
 ## Screenshots
 
 ![Main page](./Assets/index_screenshot.png)
-![High Scores page](./Assets/highscores_screenshot.png)
+![High Scores page](./Assets/highscore_screenshot.png)

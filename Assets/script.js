@@ -1,12 +1,12 @@
 //  **  Declarations
-// const _GAME_STARTTIME_SECONDS = 60;
-const _GAME_STARTTIME_SECONDS = 6;
+const _GAME_STARTTIME_SECONDS = 60;
+// const _GAME_STARTTIME_SECONDS = 10;
 
 const _BASE_QUESTIONSCORE = 1000;
 const _TIME_SCOREPENALTY = 100;
 const _MIN_SCOREPENALTY = -250;
-const _CORRECT_TIMEBONUS = 3;
-const _INCORRECT_TIMEPENALTY = 5;
+const _CORRECT_TIMEBONUS = 1;
+const _INCORRECT_TIMEPENALTY = 3;
 
 const _1SECOND = 1000;
 const _LOCALSTORAGE_NAME = "topTenList";
@@ -31,28 +31,25 @@ var _choicePrefix = _CHOICE_PREFIX;
 var _answerName = _ANSWER_NAME;
 
 
-//
-//  _masterTimer is the overall countdown clock for the entire session.
-//  _questionTimer tracks the user's time for each question.
-//
-//  Score for a particular question begins at 1,000.
-//      Each second reduces the question's score by 100.
-//      On a correct answer, the user's score goes up by the remaining score.
-//      On an incorrect answer, the user's score goes down by 1/2 the remaining score, to a minimum of zero.
-//      That way, people get higher scores for answering quickly, but they also risk losing more points if they're wrong.
-//
+/*
+  _masterTimer is the overall countdown clock for the entire session.
+  _questionTimer tracks the user's time for each question.
+
+  Score for a particular question begins at 1,000.
+      Each second reduces the question's score by 100.
+      On a correct answer, the user's score goes up by the remaining score.
+      On an incorrect answer, the user's score goes down by 1/2 the remaining score, to a minimum of zero.
+      That way, people get higher scores for answering quickly, but they also risk losing more points if they're wrong.
+*/
 
 //  **  Functions
 
-function main() {
+// function main() {
     
-    _questionArray = initQuestionList();
-    console.log(_questionArray);
+    // console.log(_questionArray);
 
     // debugger;
 
-    _questionIndex++;
-    renderQuestion(_questionIndex);
 
     // GIVEN I am taking a code quiz
 
@@ -71,6 +68,20 @@ function main() {
     // WHEN the game is over
     // THEN I can save my initials and score                    -- localStorage JA
 
+// }
+
+//  Initializes game variables and starts game clock.
+function beginGame() {
+    _questionArray = initQuestionList();
+
+    _questionIndex = 0;
+    _masterTimer = _GAME_STARTTIME_SECONDS;
+    _correctCount = 0;
+    _userScore = 0;
+    _questionTimer = 0;
+
+    renderQuestion(_questionIndex);
+    _intervalTimer = setInterval(() => {secondsTimer();}, _1SECOND);
 }
 
 //  Sets up the list of questions to ask.
@@ -95,6 +106,7 @@ function initQuestionList () {
     return returnArray;
 }
 
+
 function endGame() {
     let msgEnd = "";
 
@@ -102,7 +114,7 @@ function endGame() {
     tagQuestion.textContent = "";
     clearAnswerList();
 
-    openForm();
+    openEndForm();
 
 }
 
@@ -316,9 +328,30 @@ function shuffleArray(targetArray) {
     return targetArray;
   }
 
-  //  Set popup visibility
-function openForm() {
-    document.getElementById("popupForm").style.display="block";
+  //    Set popup visibility for start form
+function openStartForm() {
+    document.getElementById("startForm").style.display="block";
+    
+    document.getElementById("question-text").textContent = "";
+    clearAnswerList();
+}
+
+function closeStartForm() {
+    document.getElementById("startForm").style.display="none";
+    beginGame();
+}
+
+function openAboutForm() {
+    document.getElementById("aboutForm").style.display = "block";
+}
+
+function closeAboutForm() {
+    document.getElementById("aboutForm").style.display = "none";
+}
+
+  //  Set popup visibility for end form
+function openEndForm() {
+    document.getElementById("endForm").style.display="block";
     document.getElementById("score-display").textContent = _userScore.toString();
 
     if (isInTopTen()) {
@@ -326,16 +359,17 @@ function openForm() {
     } else {
         document.getElementById("top-ten").style.display = "none";
     }
-
 }
 
-  //  Set popup visibility
-function closeForm() {
+  //  Set popup visibility for end form
+function closeEndForm() {
     let userInitials = document.getElementById("initials").value
     if (userInitials !== null) {
         addToTopTen(userInitials);
     }
-    document.getElementById("popupForm").style.display="none";
+    document.getElementById("endForm").style.display="none";
+
+    openStartForm();
 }
   
 //  **  Event Handlers
@@ -351,9 +385,21 @@ function clickEventHandler (event) {
         let pickIndex = targetElement.id.replace(_choicePrefix, "");
         resolveAnswer(pickIndex);
 
+    } else if (targetId == "aboutLink") {
+        event.preventDefault();
+        openAboutForm();
+
     } else if (targetId == "closeButton") {
         event.preventDefault();
-        closeForm();
+        closeEndForm();
+
+    } else if (targetId == "startButton") {
+        event.preventDefault();
+        closeStartForm();
+
+    } else if (targetId == "closeAboutButton") {
+        event.preventDefault();
+        closeAboutForm();
     }
 }
 
@@ -369,10 +415,17 @@ function keydownEventHandler (event) {
         
     } else if ((event.target.id == "initials") && (event.keyCode == 15)) {           //  Carriage Return
         event.preventDefault();
-        closeForm();
+        closeEndForm();        
         
-    } else {
-        return;
+    } else if (event.keyCode == 27) {           //  ESCape key
+        if (document.getElementById("aboutForm").style.display != "none") {
+            event.preventDefault();
+            closeAboutForm();
+
+        } else if (document.getElementById("endForm").style.display != "none") {
+            event.preventDefault();
+            closeEndForm();
+        }
     }
 }
 
@@ -413,8 +466,7 @@ function secondsTimer () {
 
 //  **  Logic
 
-main();
+openStartForm();
 
 _clickListener = document.addEventListener("click", clickEventHandler);
 _keydownListener = document.addEventListener("keydown", keydownEventHandler);
-_intervalTimer = setInterval(() => {secondsTimer();}, _1SECOND);

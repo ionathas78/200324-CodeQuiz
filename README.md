@@ -1,6 +1,7 @@
 # 04 Web APIs: Code Quiz
 
->
+> I wanted to make a fun game to quiz students on JavaScript essentials.
+> This is my result.
 
 
 ## User Story
@@ -11,7 +12,7 @@ I WANT to take a timed quiz on JavaScript fundamentals that stores high scores
 SO THAT I can gauge my progress compared to my peers
 ```
 
-## Acceptance Criteria
+## Design Criteria
 
 ```
 GIVEN I am taking a code quiz
@@ -27,3 +28,7 @@ WHEN the game is over
 THEN I can save my initials and score
 ```
 
+## Screenshots
+
+![Main page](./Assets/index_screenshot.png)
+![High Scores page](./Assets/highscores.png)

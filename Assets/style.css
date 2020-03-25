@@ -400,15 +400,20 @@ opacity: 1;
     padding-left: 1vw
   }
 
-  .start-popup .end-popup .about-popup {
-    font-size: 1.6vw;
-  }
-  
   .form-popup {
-    left: 36vw;
+    left: 33vw;
     top: 7vh;
   }
 
+  .start-popup .about-popup {
+    font-size: 1.6vw;
+  }
+
+  .end-popup {
+    font-size: 1.6vw;
+    left: 40vw;
+  }
+  
   .form-popup h2 {
     font-size: 3.2vw;
   }
@@ -442,7 +447,7 @@ opacity: 1;
   }
     
   .form-container input {
-    width: 50vw;
+    width: 40vw;
     padding: 1vw;
     margin: 0.5vw;
     margin-right: 1vw;
@@ -467,7 +472,3 @@ opacity: 1;
   }
 
 }
-
-/* @media(max-width: 500px) {
-
-} */

@@ -1,8 +1,6 @@
 const _QUESTION_NAME = "question";
 const _CHOICE_PREFIX = "opt";
 const _ANSWER_NAME = "answer";
-const _QUESTION_PICTURE = "illustration";   // Tag of picture to use
-const _QUESTION_CAPTION = "caption";        // If this is blank, use default caption.
 
 function questionList() {
     var questions = [
@@ -14,9 +12,7 @@ function questionList() {
             opt2: "new",
             opt3: "set",
             opt4: "make",
-            answer: 1,
-            illustration: "vars",
-            caption: " "
+            answer: 1
         },
         {
             /* Question 1 */
@@ -27,27 +23,21 @@ function questionList() {
             opt3: "do",
             opt4: "inc",
             opt5: "for",
-            answer: 5,
-            illustration: "stmts",
-            caption: " "
+            answer: 5
         },
         {
             /* Question 2 */
             question: "The comparison operators = and == test whether two objects are equal and strictly equal, respectively.",
             opt0: "true",
             opt1: "false",
-            answer: 1,
-            illustration: "ops",
-            caption: " "
+            answer: 1
         },
         {
             /* Question 3 */
             question: "The variable types associated with numbers are integer, long, single, and double.",
             opt0: "true",
             opt1: "false",
-            answer: 1,
-            illustration: "vars",
-            caption: " "
+            answer: 1
         },
         {
             /* Question 4 */
@@ -58,9 +48,7 @@ function questionList() {
             opt3: "[ ]",
             opt4: "/ /",
             opt5: "# #",
-            answer: 3,
-            illustration: "arrays",
-            caption: " "
+            answer: 3
         },
         {
             /* Question 5 */
@@ -70,9 +58,7 @@ function questionList() {
             opt2: "getId()",
             opt3: "getUniqueElement()",
             opt4: "getElementById()",
-            answer: 4,
-            illustration: "DOMs",
-            caption: " "
+            answer: 4
         },
         {
             /* Question 6 */
@@ -82,9 +68,7 @@ function questionList() {
             opt2: "querySelectorAll()",
             opt3: "goFetch()",
             opt4: "queryElementBy",
-            answer: 2,
-            illustration: "DOMs",
-            caption: " "
+            answer: 2
         },
         {
             /* Question 7 */
@@ -94,9 +78,7 @@ function questionList() {
             opt2: "<app>",
             opt3: "<script>",
             opt4: "<macro>",
-            answer: 3,
-            illustration: "tags",
-            caption: " "
+            answer: 3
         },
         {
             /* Question 8 */
@@ -106,9 +88,7 @@ function questionList() {
             opt2: "confirm()",
             opt3: "input()",
             opt4: "prompt()",
-            answer: 0,
-            illustration: "fns",
-            caption: " "
+            answer: 0
         },
         {
             /* Question 9 */
@@ -118,9 +98,7 @@ function questionList() {
             opt2: "confirm()",
             opt3: "input()",
             opt4: "prompt()",
-            answer: 2,
-            illustration: "fns",
-            caption: " "
+            answer: 2
         },
         {
             /* Question 10 */
@@ -130,9 +108,7 @@ function questionList() {
             opt2: "confirm()",
             opt3: "input()",
             opt4: "prompt()",
-            answer: 4,
-            illustration: "fns",
-            caption: " "
+            answer: 4
         },
         {
             /* Question 11 */
@@ -142,9 +118,7 @@ function questionList() {
             opt2: "default",
             opt3: "end",
             opt4: "break",
-            answer: 1,
-            illustration: "exitFns",
-            caption: " "
+            answer: 1
         },
         {
             /* Question 12 */
@@ -155,9 +129,7 @@ function questionList() {
             opt3: "[ ]",
             opt4: "/ /",
             opt5: "# #",
-            answer: 1,
-            illustration: "puncts",
-            caption: " "
+            answer: 1
         },
         {
             /* Question 13 */
@@ -168,9 +140,7 @@ function questionList() {
             opt3: "[ ]",
             opt4: "/ /",
             opt5: "# #",
-            answer: 4,
-            illustration: "puncts",
-            caption: " "
+            answer: 4
         },
         {
             /* Question 14 */
@@ -179,9 +149,7 @@ function questionList() {
             opt1: "browser",
             opt2: "document",
             opt3: "console",
-            answer: 3,
-            illustration: "methods",
-            caption: " "
+            answer: 3
         },
         {
             /* Question 15 */
@@ -191,9 +159,7 @@ function questionList() {
             opt2: "gosub",
             opt3: "break",
             opt4: "next",
-            answer: 1,
-            illustration: "stmts",
-            caption: " "
+            answer: 1
         },
         {
             /* Question 16 */
@@ -204,9 +170,7 @@ function questionList() {
             opt3: "do",
             opt4: "inc",
             opt5: "for",
-            answer: 0,
-            illustration: "loops",
-            caption: " "
+            answer: 0
         },
         {
             /* Question 17 */
@@ -217,9 +181,7 @@ function questionList() {
             opt3: "do",
             opt4: "inc",
             opt5: "for",
-            answer: 3,
-            illustration: "loops",
-            caption: " "
+            answer: 3
         },
         {
             /* Question 18 */
@@ -228,9 +190,7 @@ function questionList() {
             opt1: "switch",
             opt2: "choose",
             opt3: "if",
-            answer: 1,
-            illustration: "stmts",
-            caption: " "
+            answer: 1
         },
         {
             /* Question 19 */
@@ -240,9 +200,7 @@ function questionList() {
             opt2: "function",
             opt3: "try",
             opt4: "on error",
-            answer: 3,
-            illustration: "stmts",
-            caption: " "
+            answer: 3
         },
         {
             /* Question 20 */
@@ -252,18 +210,14 @@ function questionList() {
             opt2: "## ##",
             opt3: "''",
             opt4: "/* */",
-            answer: 4,
-            illustration: "puncts",
-            caption: " "
+            answer: 4
         },
         {
             /* Question 21 */
             question: "It doesn't matter whether you capitalize variable, method, and property names correctly in JavaScript, as long as you spell them right.",
             opt0: "true",
             opt1: "false",
-            answer: 1,
-            illustration: "vars",
-            caption: " "
+            answer: 1
         },
         {
             /* Question 22 */
@@ -272,9 +226,7 @@ function questionList() {
             opt1: "obscure",
             opt2: "shadow",
             opt3: "override",
-            answer: 2,
-            illustration: "vars",
-            caption: " "
+            answer: 2
         },
         {
             /* Question 23 */
@@ -284,9 +236,7 @@ function questionList() {
             opt2: "Modulus",
             opt3: "Increment",
             opt4: "Decrement",
-            answer: 3,
-            illustration: "ops",
-            caption: " "
+            answer: 3
         },
         {
             /* Question 24 */
@@ -296,9 +246,7 @@ function questionList() {
             opt2: "Exponentiation",
             opt3: "Increment",
             opt4: "Decrement",
-            answer: 4,
-            illustration: "ops",
-            caption: " "
+            answer: 4
         },
         {
             /* Question 25 */
@@ -308,9 +256,7 @@ function questionList() {
             opt2: "+",
             opt3: "&&",
             opt4: "*=",
-            answer: 4,
-            illustration: "ops",
-            caption: " "
+            answer: 4
         },
         {
             /* Question 26 */
@@ -320,9 +266,7 @@ function questionList() {
             opt2: "&=",
             opt3: "++",
             opt4: "%=",
-            answer: 1,
-            illustration: "ops",
-            caption: " "
+            answer: 1
         },
         {
             /* Question 27 */
@@ -331,9 +275,7 @@ function questionList() {
             opt1: "===",
             opt2: "!=",
             opt3: "typeof",
-            answer: 3,
-            illustration: "ops",
-            caption: " "
+            answer: 3
         },
         {
             /* Question 28 */
@@ -343,45 +285,35 @@ function questionList() {
             opt2: "|",
             opt3: "<",
             opt4: "=>",
-            answer: 2,
-            illustration: "ops",
-            caption: " "
+            answer: 2
         },
         {
             /* Question 29 */
             question: "('1' === 1)",
             opt0: "true",
             opt1: "false",
-            answer: 1,
-            illustration: "stmts",
-            caption: " "
+            answer: 1
         },
         {
             /* Question 30 */
             question: "(1 + 1) == 2",
             opt0: "true",
             opt1: "false",
-            answer: 0,
-            illustration: "stmts",
-            caption: " "
+            answer: 0
         },
         {
             /* Question 31 */
             question: "('1' + 1) == 2",
             opt0: "true",
             opt1: "false",
-            answer: 1,
-            illustration: "stmts",
-            caption: " "
+            answer: 1
         },
         {
             /* Question 32 */
             question: "('1' + 1) === '11'",
             opt0: "true",
             opt1: "false",
-            answer: 0,
-            illustration: "stmts",
-            caption: " "
+            answer: 0
         },
         {
             /* Question 33 */
@@ -391,9 +323,7 @@ function questionList() {
             opt2: "parameters",
             opt3: "attributes",
             opt4: "whatabudabingbong",
-            answer: 2,
-            illustration: "fns",
-            caption: " "
+            answer: 2
         },
         {
             /* Question 34 */
@@ -402,9 +332,7 @@ function questionList() {
             opt1: "'y = 2x'",
             opt2: "'(x) => x * 2'",
             opt3: "'y == 2x'",
-            answer: 2,
-            illustration: "fns",
-            caption: " "
+            answer: 2
         },
         {
             /* Question 35 */
@@ -414,9 +342,7 @@ function questionList() {
             opt2: "The current element in an array",
             opt3: "The Raven",
             opt4: "The current webpage",
-            answer: 1,
-            illustration: "objs",
-            caption: " "
+            answer: 1
         },
         {
             /* Question 36 */
@@ -426,9 +352,7 @@ function questionList() {
             opt2: "It removes the first element in an array, returns it, and moves the rest of the array down to fill the space.",
             opt3: "It concatenates all items in an array into a single string.",
             opt4: "It adds an element to the end of an array.",
-            answer: 3,
-            illustration: "methods",
-            caption: " "
+            answer: 3
         },
         {
             /* Question 37 */
@@ -438,9 +362,7 @@ function questionList() {
             opt2: "It removes the first element in an array, returns it, and moves the rest of the array down to fill the space.",
             opt3: "It creates an array from a delimited list contained in a single string.",
             opt4: "It adds an element to the end of an array.",
-            answer: 1,
-            illustration: "methods",
-            caption: " "
+            answer: 1
         },
         {
             /* Question 38 */
@@ -450,9 +372,7 @@ function questionList() {
             opt2: "It removes the first element in an array, returns it, and moves the rest of the array down to fill the space.",
             opt3: "It creates an array from a delimited list contained in a single string.",
             opt4: "It concatenates all items in an array into a single string.",
-            answer: 1,
-            illustration: "methods",
-            caption: " "
+            answer: 1
         },
         {
             /* Question 39 */
@@ -462,9 +382,7 @@ function questionList() {
             opt2: "It removes the last element in an array and returns it.",
             opt3: "It concatenates all items in an array into a single string.",
             opt4: "It removes the first element in an array, returns it, and moves the rest of the array down to fill the space.",
-            answer: 4,
-            illustration: "methods",
-            caption: " "
+            answer: 4
         },
         {
             /* Question 40 */
@@ -474,9 +392,7 @@ function questionList() {
             opt2: "Date",
             opt3: "String",
             opt4: "Array or String",
-            answer: 4,
-            illustration: "props",
-            caption: " "
+            answer: 4
         },
         {
             /* Question 41 */
@@ -486,9 +402,7 @@ function questionList() {
             opt2: "Swap the order of elements in an array",
             opt3: "Return the lowest value in an array",
             opt4: "Iterate through an array once for each element",
-            answer: 1,
-            illustration: "methods",
-            caption: " "
+            answer: 1
         },
         {
             /* Question 42 */
@@ -498,9 +412,7 @@ function questionList() {
             opt2: "Swap the order of elements in an array",
             opt3: "Return the highest value in an array",
             opt4: "Arrange the elements of an array alphabetically",
-            answer: 3,
-            illustration: "methods",
-            caption: " "
+            answer: 3
         },
         {
             /* Question 43 */
@@ -510,9 +422,7 @@ function questionList() {
             opt2: "Swap the order of elements in an array",
             opt3: "Iterate through an array once for each element",
             opt4: "Return the lowest value in an array",
-            answer: 4,
-            illustration: "methods",
-            caption: " "
+            answer: 4
         },
         {
             /* Question 44 */
@@ -522,9 +432,7 @@ function questionList() {
             opt2: "Return the highest value in an array",
             opt3: "Arrange the elements of an array alphabetically",
             opt4: "Swap the order of elements in an array",
-            answer: 0,
-            illustration: "methods",
-            caption: " "
+            answer: 0
         },
         {
             /* Question 45 */
@@ -534,9 +442,7 @@ function questionList() {
             opt2: "Swaps the order of elements in an array",
             opt3: "Iterates through an array once for each element",
             opt4: "Returns the lowest value in an array",
-            answer: 2,
-            illustration: "methods",
-            caption: " "
+            answer: 2
         }
 
 

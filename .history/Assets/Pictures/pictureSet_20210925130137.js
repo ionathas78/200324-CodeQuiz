@@ -13,7 +13,7 @@ function pictureList() {
     var pictures = [
         {
             /* Picture 0 */
-            id: "arrays",
+            id: "array",
             filepath: "",
             filename: "array",
             extension: "jpg",
@@ -24,7 +24,7 @@ function pictureList() {
         },
         {
             /* Picture 1 */
-            id: "DOMs",
+            id: "DOM",
             filepath: "",
             filename: "dom_object",
             extension: "jpg",
@@ -35,7 +35,7 @@ function pictureList() {
         },
         {
             /* Picture 2 */
-            id: "exitFns",
+            id: "exitFn",
             filepath: "",
             filename: "exit_function",
             extension: "jpg",
@@ -46,7 +46,7 @@ function pictureList() {
         },
         {
             /* Picture 3 */
-            id: "fns",
+            id: "fn",
             filepath: "",
             filename: "function",
             extension: "jpg",
@@ -57,7 +57,7 @@ function pictureList() {
         },
         {
             /* Picture 4 */
-            id: "loops",
+            id: "loop",
             filepath: "",
             filename: "loop",
             extension: "jpg",
@@ -68,7 +68,7 @@ function pictureList() {
         },
         {
             /* Picture 5 */
-            id: "methods",
+            id: "method",
             filepath: "",
             filename: "method",
             extension: "jpg",
@@ -79,7 +79,7 @@ function pictureList() {
         },
         {
             /* Picture 6 */
-            id: "objs",
+            id: "obj",
             filepath: "",
             filename: "object",
             extension: "jpg",
@@ -112,7 +112,7 @@ function pictureList() {
         },
         {
             /* Picture 9 */
-            id: "puncts",
+            id: "punctuation",
             filepath: "",
             filename: "punctuation",
             extension: "jpg",
@@ -123,7 +123,7 @@ function pictureList() {
         },
         {
             /* Picture 10 */
-            id: "stmts",
+            id: "stmt",
             filepath: "",
             filename: "statement",
             extension: "jpg",
@@ -134,7 +134,7 @@ function pictureList() {
         },
         {
             /* Picture 11 */
-            id: "stepouts",
+            id: "stepout",
             filepath: "",
             filename: "stepout_block",
             extension: "jpg",
@@ -145,7 +145,7 @@ function pictureList() {
         },
         {
             /* Picture 12 */
-            id: "tags",
+            id: "tag",
             filepath: "",
             filename: "tag",
             extension: "jpg",

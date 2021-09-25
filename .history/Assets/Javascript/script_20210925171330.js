@@ -208,7 +208,7 @@ function renderQuestion (targetIndex) {
 
     clearAnswerList();
 
-    renderPicture(questionObject[_questionPicture], questionObject[_questionCaption]);
+    renderPicture(questionObject[_questionPicture]);
     
     let tagQuestion = document.getElementById("question-text");
     let questionNumber = document.getElementById("question-number");
@@ -230,7 +230,7 @@ function renderQuestion (targetIndex) {
 };
 
 //  Redraws the screen and displays the picture specified
-function renderPicture (pictureID, caption) {
+function renderPicture (pictureID) {
     let pictureBlock = document.getElementById("picture-block");
     let pictureCaption = document.getElementById("picture-caption");
 
@@ -268,8 +268,8 @@ function renderPicture (pictureID, caption) {
         if ((name != "") && (copyright != "")) { pictureTitle += "\n"};
         if (copyright != "") { pictureTitle += copyright };
 
-        if (caption != "") {
-            captionText = caption.trim();
+        if (questionObject[_questionCaption] != "") {
+            captionText = questionObject[_questionCaption].trim();
         } else {
             captionText = newPicture[_pictureDefaultCaption];
         };

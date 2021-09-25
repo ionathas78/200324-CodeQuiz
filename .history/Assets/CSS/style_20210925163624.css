@@ -96,6 +96,11 @@ footer {
     margin-left: 25px;
 }
 
+.pix {
+    max-height: 200px;
+    max-width: 75%;
+}
+
 .caption {
   font-size: 0.8rem;
   font-style: italic;

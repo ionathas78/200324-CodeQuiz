@@ -25,6 +25,8 @@ var _questionTimer = 0;
 
 var _timerTag = document.getElementById("game-timer");
 var _scoreTag = document.getElementById("game-score");
+var _pictureBlock = document.getElementById("picture-block");
+var _pictureCaption = document.getElementById("picture-caption");
 
 //  these and the functionList() function from the questionSet module.
 var _questionName = _QUESTION_NAME;
@@ -33,14 +35,12 @@ var _answerName = _ANSWER_NAME;
 var _questionPicture = _QUESTION_PICTURE;
 var _questionCaption = _QUESTION_CAPTION;
 var _pictureID = _PICTURE_ID;
-var _pictureName = _PICTURE_NAME;
 var _pictureFilepath = _FILE_PATH;
 var _pictureFilename = _FILE_NAME;
 var _pictureFileExtension = _FILE_EXTENSION_NAME;
 var _pictureAttribution = _ATTRIBUTION_NAME;
 var _pictureDate = _COPYRIGHT_DATE_NAME;
 var _pictureDefaultCaption = _PICTURE_CAPTION;
-var _pictureDefaultPath = _DEFAULT_PATH;
 
 
 /*
@@ -120,15 +120,7 @@ function initQuestionList () {
 }
 
 function initPictureList() {
-    let returnArray = pictureList();
-
-    for (let i = 0; i < returnArray.length; i++) {
-        if (returnArray[i].filepath == "") {
-            returnArray[i].filepath = _pictureDefaultPath;
-        };
-    };
-
-    return returnArray;
+    return pictureList();
 }
 
 function endGame() {
@@ -208,11 +200,10 @@ function renderQuestion (targetIndex) {
 
     clearAnswerList();
 
-    renderPicture(questionObject[_questionPicture], questionObject[_questionCaption]);
-    
     let tagQuestion = document.getElementById("question-text");
+    let listAnswers = document.getElementById("answer-list");
     let questionNumber = document.getElementById("question-number");
-    
+
     let answerIndex = 0;
     let newAnswer = questionObject[_choicePrefix + answerIndex];
 
@@ -226,79 +217,7 @@ function renderQuestion (targetIndex) {
 
         answerIndex++;
         newAnswer = questionObject[_choicePrefix + answerIndex];
-    };
-};
-
-//  Redraws the screen and displays the picture specified
-function renderPicture (pictureID, caption) {
-    let pictureBlock = document.getElementById("picture-block");
-    let pictureCaption = document.getElementById("picture-caption");
-
-    clearPicture();
-
-    let newPicture = getPictureByID(pictureID, _pictureArray);
-    let pictureFilepath = "";
-    let pictureTitle = "";
-    let captionText = "";
-
-    while (pictureBlock.hasChildNodes()) {
-        pictureBlock.removeChild(pictureBlock.firstChild);
-    };
-    while (pictureCaption.hasChildNodes()) {
-        pictureCaption.removeChild(pictureCaption.firstChild);
-    };
-
-    if (newPicture !== null) {
-        let path = newPicture[_pictureFilepath];
-        let filename = newPicture[_pictureFilename];
-        let extension = newPicture[_pictureFileExtension];
-
-        pictureFilepath = path + filename;
-        if (extension != "") pictureFilepath += "." + extension;
-
-        let name = newPicture[_pictureName];
-        let copyDate = newPicture[_pictureDate];
-        let creator = newPicture[_pictureAttribution];
-        let copyright = "";
-
-        if (copyDate != "") { copyright = "Copyright " + copyDate };
-        if (creator != "") { copyright += " by " + creator };
-        copyright.trim();
-        pictureTitle = name;
-        if ((name != "") && (copyright != "")) { pictureTitle += "\n"};
-        if (copyright != "") { pictureTitle += copyright };
-
-        if (caption != "") {
-            captionText = caption.trim();
-        } else {
-            captionText = newPicture[_pictureDefaultCaption];
-        };
-        
-    };
-
-    if (pictureFilepath != "") {
-        let imgFile = new File([], pictureFilepath);
-
-        if (imgFile !== null) {
-            let imgElement = document.createElement("img");
-            let imgCaption = null;
-            
-            imgElement.src = pictureFilepath;
-
-            if (pictureTitle != "") {
-                imgElement.title = pictureTitle;
-            };
-
-            pictureBlock.appendChild(imgElement);
-
-            if (captionText != "") {
-                imgCaption = document.createElement("p");
-                imgCaption.textContent = captionText;
-
-                pictureCaption.appendChild(imgCaption);
-            };
-        };
-    };
+    }
 }
 
 //  Given text, adds an answer to the bottom of the answer list.
@@ -387,19 +306,6 @@ function clearAnswerList () {
         answerList.removeChild(answerList.children[i]);
     }
     tagStatus.textContent = " ";
-}
-
-//  Clears the current image
-function clearPicture () {
-    let pictureBlock = document.getElementById("picture-block");
-    let pictureCaption = document.getElementById("picture-caption");
-
-    while (pictureBlock.hasChildNodes()) {
-        pictureBlock.removeChild(pictureBlock.firstChild);
-    };
-    while (pictureCaption.hasChildNodes()) {
-        pictureCaption.removeChild(pictureCaption.firstChild);
-    };
 }
 
 //  Displays the given status

@@ -187,8 +187,8 @@ function getPictureByID(tagName, pictureArray) {
     for (var i = 0; i < pictureArray.length; i++) {
         var id = pictureArray[i].id;
         if (tagName.toUpperCase() == id.toUpperCase()) {
-            returnValue = pictureArray[i];
-            break;
+            returnValue = id;
+            exit;
         };
     };
     return returnValue;

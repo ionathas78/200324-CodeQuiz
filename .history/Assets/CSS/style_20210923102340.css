@@ -92,15 +92,6 @@ footer {
     width: 33%;
 }
 
-.question-picture {
-    margin-left: 25px;
-}
-
-.caption {
-  font-size: 0.8rem;
-  font-style: italic;
-}
-
 .question-text {
     font-size: 1rem;
     margin: 20px 25px;

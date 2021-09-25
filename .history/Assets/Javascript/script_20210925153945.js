@@ -208,44 +208,23 @@ function renderQuestion (targetIndex) {
 
     clearAnswerList();
 
-    renderPicture(questionObject[_questionPicture], questionObject[_questionCaption]);
-    
     let tagQuestion = document.getElementById("question-text");
     let questionNumber = document.getElementById("question-number");
+    let pictureBlock = document.getElementById("picture-block");
+    let pictureCaption = document.getElementById("picture-caption");
     
     let answerIndex = 0;
     let newAnswer = questionObject[_choicePrefix + answerIndex];
-
-    tagQuestion.textContent = questionObject[_questionName];
-    questionNumber.textContent = targetIndex + 1;
-
-    while (newAnswer !== undefined) {
-        if (newAnswer != "") {
-            addListAnswer (newAnswer);
-        }
-
-        answerIndex++;
-        newAnswer = questionObject[_choicePrefix + answerIndex];
-    };
-};
-
-//  Redraws the screen and displays the picture specified
-function renderPicture (pictureID, caption) {
-    let pictureBlock = document.getElementById("picture-block");
-    let pictureCaption = document.getElementById("picture-caption");
-
-    clearPicture();
-
-    let newPicture = getPictureByID(pictureID, _pictureArray);
+    let newPicture = getPictureByID(questionObject[_questionPicture], _pictureArray);
     let pictureFilepath = "";
     let pictureTitle = "";
     let captionText = "";
 
     while (pictureBlock.hasChildNodes()) {
-        pictureBlock.removeChild(pictureBlock.firstChild);
+        pictureBlock.removeChild(pictureBlock.lastChild());
     };
     while (pictureCaption.hasChildNodes()) {
-        pictureCaption.removeChild(pictureCaption.firstChild);
+        pictureCaption.removeChild(pictureCaption.lastChild());
     };
 
     if (newPicture !== null) {
@@ -261,15 +240,15 @@ function renderPicture (pictureID, caption) {
         let creator = newPicture[_pictureAttribution];
         let copyright = "";
 
-        if (copyDate != "") { copyright = "Copyright " + copyDate };
+        if (copyDate != "") { copyright = "&copy;" + copyDate };
         if (creator != "") { copyright += " by " + creator };
         copyright.trim();
         pictureTitle = name;
         if ((name != "") && (copyright != "")) { pictureTitle += "\n"};
         if (copyright != "") { pictureTitle += copyright };
 
-        if (caption != "") {
-            captionText = caption.trim();
+        if (questionObject.captionText != "") {
+            captionText = questionObject.captionText.trim();
         } else {
             captionText = newPicture[_pictureDefaultCaption];
         };
@@ -277,13 +256,13 @@ function renderPicture (pictureID, caption) {
     };
 
     if (pictureFilepath != "") {
-        let imgFile = new File([], pictureFilepath);
+        let imgFile = new File(pictureFilepath);
 
-        if (imgFile !== null) {
+        if (imgFile.exists()) {
             let imgElement = document.createElement("img");
             let imgCaption = null;
             
-            imgElement.src = pictureFilepath;
+            imgElement.source = pictureFilepath;
 
             if (pictureTitle != "") {
                 imgElement.title = pictureTitle;
@@ -299,7 +278,19 @@ function renderPicture (pictureID, caption) {
             };
         };
     };
-}
+
+    tagQuestion.textContent = questionObject[_questionName];
+    questionNumber.textContent = targetIndex + 1;
+
+    while (newAnswer !== undefined) {
+        if (newAnswer != "") {
+            addListAnswer (newAnswer);
+        }
+
+        answerIndex++;
+        newAnswer = questionObject[_choicePrefix + answerIndex];
+    };
+};
 
 //  Given text, adds an answer to the bottom of the answer list.
 function addListAnswer (answerText) {
@@ -387,19 +378,6 @@ function clearAnswerList () {
         answerList.removeChild(answerList.children[i]);
     }
     tagStatus.textContent = " ";
-}
-
-//  Clears the current image
-function clearPicture () {
-    let pictureBlock = document.getElementById("picture-block");
-    let pictureCaption = document.getElementById("picture-caption");
-
-    while (pictureBlock.hasChildNodes()) {
-        pictureBlock.removeChild(pictureBlock.firstChild);
-    };
-    while (pictureCaption.hasChildNodes()) {
-        pictureCaption.removeChild(pictureCaption.firstChild);
-    };
 }
 
 //  Displays the given status

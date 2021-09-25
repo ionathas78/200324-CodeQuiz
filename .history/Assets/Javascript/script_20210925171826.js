@@ -17,8 +17,6 @@ var _topTenList = [];
 
 var _questionArray = [];
 var _pictureArray = [];
-var _answerArray = [];
-var _correctAnswer = "";
 var _questionIndex = -1;
 var _correctCount = 0;
 var _userScore = 0;
@@ -207,9 +205,6 @@ function addToTopTen (userInitials) {
 //  Redraws the screen and displays the question in targetIndex.
 function renderQuestion (targetIndex) {
     let questionObject = _questionArray[targetIndex];
-    let correctIndex = questionObject[_answerName];
-
-    _correctAnswer = questionObject[_choicePrefix + correctIndex];
 
     clearAnswerList();
 
@@ -217,26 +212,21 @@ function renderQuestion (targetIndex) {
     
     let tagQuestion = document.getElementById("question-text");
     let questionNumber = document.getElementById("question-number");
-
+    
     let answerIndex = 0;
-    _answerArray = [];
-
     let newAnswer = questionObject[_choicePrefix + answerIndex];
+
+    tagQuestion.textContent = questionObject[_questionName];
+    questionNumber.textContent = targetIndex + 1;
+
     while (newAnswer !== undefined) {
         if (newAnswer != "") {
-            _answerArray.push(newAnswer);
+            addListAnswer (newAnswer);
         }
 
         answerIndex++;
         newAnswer = questionObject[_choicePrefix + answerIndex];
     };
-
-    shuffleArray(_answerArray);
-
-    tagQuestion.textContent = questionObject[_questionName];
-    questionNumber.textContent = targetIndex + 1;
-
-    _answerArray.forEach(element => addListAnswer(element));
 };
 
 //  Redraws the screen and displays the picture specified
@@ -335,7 +325,6 @@ function addListAnswer (answerText) {
     newElement.id = idAnswer;
     newElement.className = classAnswer;
     newElement.textContent = newIndex + "  -  " + answerText;
-    newElement.dataset.answer = answerText;
 
     answerList.appendChild(newElement);
 }
@@ -344,9 +333,8 @@ function addListAnswer (answerText) {
 function resolveAnswer(pickIndex) {
     let msgStatus = "";
 
-//    let pickAnswer = _questionArray[_questionIndex][_choicePrefix + pickIndex];
-    let pickAnswer = _answerArray[pickIndex];
-    if (pickAnswer == _correctAnswer) {
+    let correctIndex = _questionArray[_questionIndex][_answerName];
+    if (pickIndex == correctIndex) {
         applyCorrectAnswer();
         msgStatus = "Correct!";
     } else {

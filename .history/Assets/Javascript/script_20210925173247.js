@@ -17,7 +17,6 @@ var _topTenList = [];
 
 var _questionArray = [];
 var _pictureArray = [];
-var _answerArray = [];
 var _correctAnswer = "";
 var _questionIndex = -1;
 var _correctCount = 0;
@@ -219,24 +218,22 @@ function renderQuestion (targetIndex) {
     let questionNumber = document.getElementById("question-number");
 
     let answerIndex = 0;
-    _answerArray = [];
+    let answers = [];
 
     let newAnswer = questionObject[_choicePrefix + answerIndex];
     while (newAnswer !== undefined) {
         if (newAnswer != "") {
-            _answerArray.push(newAnswer);
+            answers.push(newAnswer);
         }
 
         answerIndex++;
         newAnswer = questionObject[_choicePrefix + answerIndex];
     };
 
-    shuffleArray(_answerArray);
-
     tagQuestion.textContent = questionObject[_questionName];
     questionNumber.textContent = targetIndex + 1;
 
-    _answerArray.forEach(element => addListAnswer(element));
+    answers.forEach(element => addListAnswer(element));
 };
 
 //  Redraws the screen and displays the picture specified
@@ -335,7 +332,6 @@ function addListAnswer (answerText) {
     newElement.id = idAnswer;
     newElement.className = classAnswer;
     newElement.textContent = newIndex + "  -  " + answerText;
-    newElement.dataset.answer = answerText;
 
     answerList.appendChild(newElement);
 }
@@ -344,8 +340,7 @@ function addListAnswer (answerText) {
 function resolveAnswer(pickIndex) {
     let msgStatus = "";
 
-//    let pickAnswer = _questionArray[_questionIndex][_choicePrefix + pickIndex];
-    let pickAnswer = _answerArray[pickIndex];
+    let pickAnswer = _questionArray[_questionIndex][_choicePrefix + pickIndex];
     if (pickAnswer == _correctAnswer) {
         applyCorrectAnswer();
         msgStatus = "Correct!";

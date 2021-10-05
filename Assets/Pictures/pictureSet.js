@@ -6,6 +6,12 @@ const _PICTURE_NAME = "name";
 const _ATTRIBUTION_NAME = "creator";
 const _COPYRIGHT_DATE_NAME = "date";
 const _PICTURE_CAPTION = "caption";
+const _PICTURE_LOCATION = "location";
+const _PICTURE_HEIGHT = "height";
+const _PICTURE_WIDTH = "width";
+
+const _LOCATION_INDEX_TOP = 0;
+const _LOCATION_INDEX_BOTTOM = -1;
 
 const _DEFAULT_PATH = "./Assets/Pictures/";         // If no filepath is specified, default to this value
 
@@ -20,7 +26,8 @@ function pictureList() {
             name: "Arrayed Against",
             creator: "Jonathan Andrews",
             date: "2021",
-            caption: "Arrays are versatile data collections in programming."
+            caption: "Arrays are versatile data collections in programming.",
+            location: _LOCATION_INDEX_TOP
         },
         {
             /* Picture 1 */
@@ -31,7 +38,8 @@ function pictureList() {
             name: "RomComDOM",
             creator: "Jonathan Andrews",
             date: "2021",
-            caption: "The Document Object Model gives hierarchical structure to a webpage."
+            caption: "The Document Object Model gives hierarchical structure to a webpage.",
+            location: _LOCATION_INDEX_TOP
         },
         {
             /* Picture 2 */
@@ -42,7 +50,8 @@ function pictureList() {
             name: "Bye Bye Function",
             creator: "Jonathan Andrews",
             date: "2021",
-            caption: "Because sometimes, it's just time to get out."
+            caption: "Because sometimes, it's just time to get out.",
+            location: _LOCATION_INDEX_TOP
         },
         {
             /* Picture 3 */
@@ -53,7 +62,8 @@ function pictureList() {
             name: "myFunction()",
             creator: "Jonathan Andrews",
             date: "2021",
-            caption: "The function of a Function() is to functionally function."
+            caption: "The function of a Function() is functional functioning.",
+            location: _LOCATION_INDEX_TOP
         },
         {
             /* Picture 4 */
@@ -64,7 +74,8 @@ function pictureList() {
             name: "Time Loop... Loop... Loop...",
             creator: "Jonathan Andrews",
             date: "2021",
-            caption: "Loops are not a glitch in the Matrix. Loops are not a glitch in the Matrix."
+            caption: "Loops are not a glitch in the Matrix. Loops are not a glitch in the Matrix.",
+            location: _LOCATION_INDEX_TOP
         },
         {
             /* Picture 5 */
@@ -75,7 +86,8 @@ function pictureList() {
             name: "Method Man",
             creator: "Jonathan Andrews",
             date: "2021",
-            caption: "A method by any other name... is a function."
+            caption: "A method by any other name... is a function.",
+            location: _LOCATION_INDEX_TOP
         },
         {
             /* Picture 6 */
@@ -86,7 +98,8 @@ function pictureList() {
             name: "Object, Objectified",
             creator: "Jonathan Andrews",
             date: "2021",
-            caption: "Objects are indiscriminate data collections that can store variables as well as functions."
+            caption: "Objects are indiscriminate data collections that can store variables as well as functions.",
+            location: _LOCATION_INDEX_TOP
         },
         {
             /* Picture 7 */
@@ -97,7 +110,8 @@ function pictureList() {
             name: "Smooth Operators",
             creator: "Jonathan Andrews",
             date: "2021",
-            caption: "Using an operator == a good idea!"
+            caption: "Using an operator == a good idea!",
+            location: _LOCATION_INDEX_TOP
         },
         {
             /* Picture 8 */
@@ -108,7 +122,8 @@ function pictureList() {
             name: "Virtual Property",
             creator: "Jonathan Andrews",
             date: "2021",
-            caption: "Is it a property? Is it a variable? Is it a function? ... Yes."
+            caption: "Is it a property? Is it a variable? Is it a function? ... Yes.",
+            location: _LOCATION_INDEX_TOP
         },
         {
             /* Picture 9 */
@@ -119,7 +134,8 @@ function pictureList() {
             name: "Periodt!",
             creator: "Jonathan Andrews",
             date: "2021",
-            caption: "Because, syntax: matters!"
+            caption: "Because, syntax: matters!",
+            location: _LOCATION_INDEX_TOP
         },
         {
             /* Picture 10 */
@@ -130,7 +146,8 @@ function pictureList() {
             name: "Making a Statement",
             creator: "Jonathan Andrews",
             date: "2021",
-            caption: "A statement is a language-defined directive to the computer."
+            caption: "A statement is a language-defined directive to the computer.",
+            location: _LOCATION_INDEX_TOP
         },
         {
             /* Picture 11 */
@@ -141,7 +158,8 @@ function pictureList() {
             name: "",
             creator: "Jonathan Andrews",
             date: "2021",
-            caption: "Stepping out... and back in."
+            caption: "Stepping out... and back in.",
+            location: _LOCATION_INDEX_TOP
         },
         {
             /* Picture 12 */
@@ -152,7 +170,8 @@ function pictureList() {
             name: "Tag! You're it.",
             creator: "Jonathan Andrews",
             date: "2021",
-            caption: "Part hashtag, part nametag. All ML."
+            caption: "Part hashtag, part nametag. All ML.",
+            location: _LOCATION_INDEX_TOP
         },
         {
             /* Picture 13 */
@@ -163,7 +182,8 @@ function pictureList() {
             name: "Visiting Vexations",
             creator: "Jonathan Andrews",
             date: "2021",
-            caption: "The virtuous variable vivifies its veracious vocation in the vicissitudinous variation and valorous vigilance of its value."
+            caption: "The virtuous variable vivifies its veracious vocation in the vicissitudinous variation and valorous vigilance of its value.",
+            location: _LOCATION_INDEX_TOP
         }
 
 
@@ -176,7 +196,8 @@ function pictureList() {
 //            name: "",
 //            creator: "",
 //            date: "",
-//            caption: ""
+//            caption: "",
+//            location: _LOCATION_INDEX_TOP
 //        },
     ];
     return pictures;

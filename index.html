@@ -41,8 +41,8 @@
         </section>
         <hr>
         <figure class="question-picture">
-          <div class = "pix" id="picture-block"></div>
-          <div class="caption" id="picture-caption"></div>
+          <div class = "pix" id="picture-block-top"></div>
+          <div class="caption" id="picture-caption-top"></div>
         </figure>
         <hr>
         <section class="question-text" id="question-text">
@@ -54,16 +54,22 @@
                 <li class="answer-item answer-item-even" id="opt1">A monofil katana</li>
                 <li class="answer-item answer-item-odd" id="opt2">A Doberman attack drone</li>
                 <li class="answer-item answer-item-even" id="opt3">An Excalibur cyberdeck</li>
-                <li class="answer-item answer-item-odd" id="opt4">A good Manabolt</li>                
+                <li class="answer-item answer-item-odd" id="opt4">A good Manabolt</li> 
+                <li class="answer-item answer-item-even" id="opt5">A scrappy city spirit</li>               
             </ol>
         </section>
         <section class="bottom-block">
             <p id="status-text">Starting...</p>
         </section>
+        <hr>
+        <figure class="question-picture">
+          <div class = "pix" id="picture-block-bottom"></div>
+          <div class="caption" id="picture-caption-bottom"></div>
+        </figure>
     </main>
 
     <footer>
-        <p>&copy; Copyright 2020, Jonathan Andrews</p>
+        <p>&copy; Copyright 2021, Jonathan Andrews</p>
     </footer>
 
     <section class="start-popup">
@@ -72,7 +78,9 @@
             <h2>codeQuiz</h2>
             <hr>
             <article class="button-container">
-              <button type="submit" id="startButton" class="pop-btn">Start <i class="far fa-arrow-alt-circle-right"></i></button>
+              <button type="submit" id="start-button-0p5" class="pop-btn" title="30 second game">Start Flash Session <i class="far fa-arrow-alt-circle-right"></i></button>
+              <button type="submit" id="start-button-1p0" class="pop-btn" title="60 second game">Start Standard Session <i class="far fa-arrow-alt-circle-right"></i></button>
+              <button type="submit" id="start-button-2p0" class="pop-btn" title="120 second game">Start Extended Session <i class="far fa-arrow-alt-circle-right"></i></button>
             </article> 
           </form>
         </div>

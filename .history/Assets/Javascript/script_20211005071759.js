@@ -300,7 +300,7 @@ function renderPicture (pictureID, caption, location) {
         let imgFile = new File([], pictureFilepath);
         let pictureBlock, pictureCaption;
 
-        if (!location || (location == _LOCATION_INDEX_TOP) || (location.toString()[0].toUpperCase() == "T")) {
+        if (!location || (location == _LOCATION_INDEX_TOP) || (location.toString[0].toUpperCase() == "T")) {
             pictureBlock = document.getElementById("picture-block-top");
             pictureCaption = document.getElementById("picture-caption-top");
         } else {

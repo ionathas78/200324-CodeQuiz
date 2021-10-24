@@ -98,7 +98,7 @@ function beginGame() {
     _pictureArray = initPictureList();
 
     _questionIndex = 0;
-    _masterTimer = Math.round(_GAME_STARTTIME_SECONDS * _timeMultiplier);
+    _masterTimer = _GAME_STARTTIME_SECONDS * _timeMultiplier;
     _correctCount = 0;
     _userScore = 0;
     _questionTimer = 0;
@@ -378,7 +378,7 @@ function resolveAnswer(pickIndex) {
         msgStatus = "Correct!";
     } else {
         applyWrongAnswer();
-        msgStatus = "Sorry, no. The answer was '" + _correctAnswer + ".'";
+        msgStatus = "Sorry, no. The answer was " + _correctAnswer;
     }
 
     _questionIndex++;
@@ -409,7 +409,7 @@ function applyWrongAnswer() {
     _userScore += questionScore;
 
     if (_masterTimer > _INCORRECT_TIMEPENALTY * _timeMultiplier) {
-        _masterTimer -= Math.round(_INCORRECT_TIMEPENALTY * _timeMultiplier);
+        _masterTimer -= _INCORRECT_TIMEPENALTY * _timeMultiplier;
     } else {
         _masterTimer = 0;
     }
@@ -608,13 +608,13 @@ function secondsTimer () {
 
     let timerSeconds = _masterTimer % 60;
     let stringSeconds = timerSeconds.toString();
-    if (timerSeconds < 10) {
+    if (stringSeconds.length = 1) {
         stringSeconds = "0" + stringSeconds;
     }
 
     let timerMinutes = Math.floor(_masterTimer / 60);
     let stringMinutes = timerMinutes.toString();
-    if (timerMinutes < 10) {
+    if (stringMinutes.length = 1) {
         stringMinutes = "0" + stringMinutes;
     }
 

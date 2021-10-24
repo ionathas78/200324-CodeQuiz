@@ -409,7 +409,7 @@ function applyWrongAnswer() {
     _userScore += questionScore;
 
     if (_masterTimer > _INCORRECT_TIMEPENALTY * _timeMultiplier) {
-        _masterTimer -= Math.round(_INCORRECT_TIMEPENALTY * _timeMultiplier);
+        _masterTimer -= _INCORRECT_TIMEPENALTY * _timeMultiplier;
     } else {
         _masterTimer = 0;
     }

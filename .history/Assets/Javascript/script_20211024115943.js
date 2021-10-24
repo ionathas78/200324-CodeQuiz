@@ -409,7 +409,7 @@ function applyWrongAnswer() {
     _userScore += questionScore;
 
     if (_masterTimer > _INCORRECT_TIMEPENALTY * _timeMultiplier) {
-        _masterTimer -= Math.round(_INCORRECT_TIMEPENALTY * _timeMultiplier);
+        _masterTimer -= _INCORRECT_TIMEPENALTY * _timeMultiplier;
     } else {
         _masterTimer = 0;
     }
@@ -608,13 +608,13 @@ function secondsTimer () {
 
     let timerSeconds = _masterTimer % 60;
     let stringSeconds = timerSeconds.toString();
-    if (timerSeconds < 10) {
+    if (stringSeconds.length = 1) {
         stringSeconds = "0" + stringSeconds;
     }
 
     let timerMinutes = Math.floor(_masterTimer / 60);
     let stringMinutes = timerMinutes.toString();
-    if (timerMinutes < 10) {
+    if (stringMinutes.length = 1) {
         stringMinutes = "0" + stringMinutes;
     }
 

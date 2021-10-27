@@ -304,6 +304,8 @@ function renderPicture (pictureID, caption, location) {
             pictureBlock = document.getElementById("picture-block-top");
             pictureCaption = document.getElementById("picture-caption-top");
         } else {
+            document.getElementById("picture-bottom").style.marginBottom = "25px";
+
             pictureBlock = document.getElementById("picture-block-bottom");
             pictureCaption = document.getElementById("picture-caption-bottom");
         }
@@ -432,6 +434,7 @@ function clearAnswerList () {
 function clearPicture () {
     let pictureBlockTop = document.getElementById("picture-block-top");
     let pictureCaptionTop = document.getElementById("picture-caption-top");
+    let pictureFigureBottom = document.getElementById("picture-bottom");
     let pictureBlockBottom = document.getElementById("picture-block-bottom");
     let pictureCaptionBottom = document.getElementById("picture-caption-bottom");
 
@@ -441,6 +444,8 @@ function clearPicture () {
     while (pictureCaptionTop.hasChildNodes()) {
         pictureCaptionTop.removeChild(pictureCaptionTop.firstChild);
     };
+
+    pictureFigureBottom.style.marginBottom = "";
 
     while (pictureBlockBottom.hasChildNodes()) {
         pictureBlockBottom.removeChild(pictureBlockBottom.firstChild);

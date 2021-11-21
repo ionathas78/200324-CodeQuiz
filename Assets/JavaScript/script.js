@@ -15,6 +15,40 @@ const _INCORRECT_TIMEPENALTY = 3;
 const _1SECOND = 1000;
 const _LOCALSTORAGE_NAME = "topTenList";
 
+const _ID_GAME_TIMER = "game-timer";
+const _ID_GAME_SCORE = "game-score";
+const _ID_LINE_BOTTOM = "line-bottom";
+const _ID_QUESTION_TEXT = "question-text";
+const _ID_QUESTION_NUMBER = "question-number";
+const _ID_PICTUREBLOCK_TOP = "picture-block-top";
+const _ID_PICTURECAPTION_TOP = "picture-caption-top";
+const _ID_PICTURELINE_TOP = "picture-line-top";
+const _ID_PICTURE_BOTTOM = "picture-bottom";
+const _ID_PICTUREBLOCK_BOTTOM = "picture-block-bottom";
+const _ID_PICTURECAPTION_BOTTOM = "picture-caption-bottom";
+const _ID_PICTURELINE_BOTTOM = "picture-line-bottom";
+const _ID_STATUS_TEXT = "status-text";
+const _ID_ANSWER_LIST = "answer-list";
+const _ID_TOPTEN = "top-ten";
+const _ID_SCORE_DISPLAY = "score-display";
+const _ID_INITIALS = "initials";
+const _ID_ABOUT_LINK = "about-link";
+const _ID_CLOSE_BUTTON = "close-button";
+const _ID_CLOSE_BUTTON_ABOUT = "close-about-button";
+const _ID_START_BUTTON_FLASH = "start-button-0p5";
+const _ID_START_BUTTON = "start-button-1p0";
+const _ID_START_BUTTON_EXTENDED = "start-button-2p0";
+
+const _ID_FORM_START = "start-form";
+const _ID_FORM_END = "end-form";
+const _ID_FORM_ABOUT = "about-form";
+
+const _CLASS_SHOWN = "shown-block";
+const _CLASS_HIDDEN = "hidden";
+const _CLASS_ANSWER = "answer-item";
+const _CLASS_ANSWER_EVEN = "answer-item-even";
+const _CLASS_ANSWER_ODD = "answer-item-odd";
+
 var _clickListener, _keydownListener
 var _intervalTimer;
 var _topTenList = [];
@@ -30,8 +64,8 @@ var _masterTimer = _GAME_STARTTIME_SECONDS;
 var _timeMultiplier = _GAME_TIMEX_SHORT;
 var _questionTimer = 0;
 
-var _timerTag = document.getElementById("game-timer");
-var _scoreTag = document.getElementById("game-score");
+var _timerTag = document.getElementById(_ID_GAME_TIMER);
+var _scoreTag = document.getElementById(_ID_GAME_SCORE);
 
 //  these and the functionList() function from the questionSet module.
 var _questionName = _QUESTION_NAME;
@@ -94,7 +128,7 @@ var _pictureWidth = _PICTURE_WIDTH;
 
 //  Initializes game variables and starts game clock.
 function beginGame() {
-    let lineToShow = document.getElementById("line-bottom");
+    let lineToShow = document.getElementById(_ID_LINE_BOTTOM);
     _questionArray = initQuestionList();
     _pictureArray = initPictureList();
 
@@ -104,7 +138,7 @@ function beginGame() {
     _userScore = 0;
     _questionTimer = 0;
 
-    lineToShow.className = "shown-block";
+    lineToShow.className = _CLASS_SHOWN;
     renderQuestion(_questionIndex);
     _intervalTimer = setInterval(() => {secondsTimer();}, _1SECOND);
 }
@@ -154,11 +188,11 @@ function initPictureList() {
 function endGame() {
     let msgEnd = "";
 
-    let tagQuestion = document.getElementById("question-text");
+    let tagQuestion = document.getElementById(_ID_QUESTION_TEXT);
     tagQuestion.textContent = "";
 
-    let lineToHide = document.getElementById("line-bottom");
-    lineToHide.className = "hidden";
+    let lineToHide = document.getElementById(_ID_LINE_BOTTOM);
+    lineToHide.className = _CLASS_HIDDEN;
     
     clearPicture();
     clearAnswerList();
@@ -237,8 +271,8 @@ function renderQuestion (targetIndex) {
 
     renderPicture(questionObject[_questionPicture], questionObject[_questionCaption], questionObject[_questionPictureLocation]);
     
-    let tagQuestion = document.getElementById("question-text");
-    let questionNumber = document.getElementById("question-number");
+    let tagQuestion = document.getElementById(_ID_QUESTION_TEXT);
+    let questionNumber = document.getElementById(_ID_QUESTION_NUMBER);
 
     let answerIndex = 0;
     _answerArray = [];
@@ -307,16 +341,16 @@ function renderPicture (pictureID, caption, location) {
         let pictureBlock, pictureCaption, pictureLine;
 
         if (!location || (location == _LOCATION_INDEX_TOP) || (location.toString()[0].toUpperCase() == "T")) {
-            pictureBlock = document.getElementById("picture-block-top");
-            pictureCaption = document.getElementById("picture-caption-top");
-            pictureLine = document.getElementById("picture-line-top");
+            pictureBlock = document.getElementById(_ID_PICTUREBLOCK_TOP);
+            pictureCaption = document.getElementById(_ID_PICTURECAPTION_TOP);
+            pictureLine = document.getElementById(_ID_PICTURELINE_TOP);
 
         } else {
-            document.getElementById("picture-bottom").style.marginBottom = "25px";
+            document.getElementById(_ID_PICTURE_BOTTOM).style.marginBottom = "25px";
             
-            pictureBlock = document.getElementById("picture-block-bottom");
-            pictureCaption = document.getElementById("picture-caption-bottom");
-            pictureLine = document.getElementById("picture-line-bottom");
+            pictureBlock = document.getElementById(_ID_PICTUREBLOCK_BOTTOM);
+            pictureCaption = document.getElementById(_ID_PICTURECAPTION_BOTTOM);
+            pictureLine = document.getElementById(_ID_PICTURELINE_BOTTOM);
         }
 
         if (imgFile) {
@@ -324,7 +358,7 @@ function renderPicture (pictureID, caption, location) {
             let imgCaption = null;
             
             imgElement.src = pictureFilepath;
-            pictureLine.className = "shown-block";
+            pictureLine.className = _CLASS_SHOWN;
 
             if (pictureTitle != "") {
                 imgElement.title = pictureTitle;
@@ -357,18 +391,18 @@ function addListAnswer (answerText) {
     }
 
     let newElement = document.createElement("li");
-    let answerList = document.getElementById("answer-list");
+    let answerList = document.getElementById(_ID_ANSWER_LIST);
 
     let newIndex = answerList.childElementCount;
     let idAnswer = _choicePrefix + newIndex;
-    let classAnswer = "answer-item answer-item-";
+    let classAnswer = _CLASS_ANSWER;
 
     if (newIndex % 2) {
         //  Item is odd
-        classAnswer += "odd";
+        classAnswer += " " + _CLASS_ANSWER_ODD;
     } else {
         //  Item is even
-        classAnswer += "even";
+        classAnswer += " " + _CLASS_ANSWER_EVEN;
     }
     
     newElement.id = idAnswer;
@@ -429,9 +463,9 @@ function applyWrongAnswer() {
 
 //  Clears the answer list
 function clearAnswerList () {
-    let questionText = document.getElementById("question-text");
-    let answerList = document.getElementById("answer-list");
-    let tagStatus = document.getElementById("status-text");
+    let questionText = document.getElementById(_ID_QUESTION_TEXT);
+    let answerList = document.getElementById(_ID_ANSWER_LIST);
+    let tagStatus = document.getElementById(_ID_STATUS_TEXT);
 
     questionText.textContent = "  ";
     for (let i = answerList.childElementCount - 1; i > -1; i--) {
@@ -442,16 +476,16 @@ function clearAnswerList () {
 
 //  Clears the current image
 function clearPicture () {
-    let pictureBlockTop = document.getElementById("picture-block-top");
-    let pictureCaptionTop = document.getElementById("picture-caption-top");
-    let pictureLineTop = document.getElementById("picture-line-top");
-    let pictureFigureBottom = document.getElementById("picture-bottom");
-    let pictureBlockBottom = document.getElementById("picture-block-bottom");
-    let pictureCaptionBottom = document.getElementById("picture-caption-bottom");
-    let pictureLineBottom = document.getElementById("picture-line-bottom");
+    let pictureBlockTop = document.getElementById(_ID_PICTUREBLOCK_TOP);
+    let pictureCaptionTop = document.getElementById(_ID_PICTURECAPTION_TOP);
+    let pictureLineTop = document.getElementById(_ID_PICTURELINE_TOP);
+    let pictureFigureBottom = document.getElementById(_ID_PICTURE_BOTTOM);
+    let pictureBlockBottom = document.getElementById(_ID_PICTUREBLOCK_BOTTOM);
+    let pictureCaptionBottom = document.getElementById(_ID_PICTURECAPTION_BOTTOM);
+    let pictureLineBottom = document.getElementById(_ID_PICTURELINE_BOTTOM);
 
-    pictureLineTop.className = "hidden";
-    pictureLineBottom.className = "hidden";
+    pictureLineTop.className = _CLASS_HIDDEN;
+    pictureLineBottom.className = _CLASS_HIDDEN;
 
     while (pictureBlockTop.hasChildNodes()) {
         pictureBlockTop.removeChild(pictureBlockTop.firstChild);
@@ -475,7 +509,7 @@ function displayStatus (textToDisplay) {
         return;
     }
 
-    let tagStatus = document.getElementById("status-text");
+    let tagStatus = document.getElementById(_ID_STATUS_TEXT);
     tagStatus.textContent = textToDisplay;
 
     // Add intervalTimer
@@ -507,44 +541,44 @@ function shuffleArray(targetArray) {
 
   //    Set popup visibility for start form
 function openStartForm() {
-    document.getElementById("startForm").style.display="block";
+    document.getElementById(_ID_FORM_START).style.display="block";
     
-    document.getElementById("question-text").textContent = "";
+    document.getElementById(_ID_QUESTION_TEXT).textContent = "";
     clearAnswerList();
 }
 
 function closeStartForm() {
-    document.getElementById("startForm").style.display="none";
+    document.getElementById(_ID_FORM_START).style.display="none";
     beginGame();
 }
 
 function openAboutForm() {
-    document.getElementById("aboutForm").style.display = "block";
+    document.getElementById(_ID_FORM_ABOUT).style.display = "block";
 }
 
 function closeAboutForm() {
-    document.getElementById("aboutForm").style.display = "none";
+    document.getElementById(_ID_FORM_ABOUT).style.display = "none";
 }
 
   //  Set popup visibility for end form
 function openEndForm() {
-    document.getElementById("endForm").style.display="block";
-    document.getElementById("score-display").textContent = _userScore.toString();
+    document.getElementById(_ID_FORM_END).style.display="block";
+    document.getElementById(_ID_SCORE_DISPLAY).textContent = _userScore.toString();
 
     if (isInTopTen()) {
-        document.getElementById("top-ten").style.display = "block";    
+        document.getElementById(_ID_TOPTEN).style.display = "block";    
     } else {
-        document.getElementById("top-ten").style.display = "none";
+        document.getElementById(_ID_TOPTEN).style.display = "none";
     }
 }
 
   //  Set popup visibility for end form
 function closeEndForm() {
-    let userInitials = document.getElementById("initials").value
+    let userInitials = document.getElementById(_ID_INITIALS).value
     if (userInitials !== null) {
         addToTopTen(userInitials);
     }
-    document.getElementById("endForm").style.display="none";
+    document.getElementById(_ID_FORM_END).style.display="none";
 
     openStartForm();
 }
@@ -557,35 +591,35 @@ function clickEventHandler (event) {
     let targetClass = targetElement.className;
     let targetId = targetElement.id;
     
-    if (targetClass.indexOf("answer-item") > -1) {
+    if (targetClass.indexOf(_CLASS_ANSWER) > -1) {
         event.preventDefault();
         let pickIndex = targetElement.id.replace(_choicePrefix, "");
         resolveAnswer(pickIndex);
 
-    } else if (targetId == "aboutLink") {
+    } else if (targetId == _ID_ABOUT_LINK) {
         event.preventDefault();
         openAboutForm();
 
-    } else if (targetId == "closeButton") {
+    } else if (targetId == _ID_CLOSE_BUTTON) {
         event.preventDefault();
         closeEndForm();
 
-    } else if (targetId == "start-button-0p5") {
+    } else if (targetId == _ID_START_BUTTON_FLASH) {
         event.preventDefault();
         _timeMultiplier = _GAME_TIMEX_FLASH;
         closeStartForm();
 
-    } else if (targetId == "start-button-1p0") {
+    } else if (targetId == _ID_START_BUTTON) {
         event.preventDefault();
         _timeMultiplier = _GAME_TIMEX_SHORT;
         closeStartForm();
 
-    } else if (targetId == "start-button-2p0") {
+    } else if (targetId == _ID_START_BUTTON_EXTENDED) {
         event.preventDefault();
         _timeMultiplier = _GAME_TIMEX_EXTENDED;
         closeStartForm();
 
-    } else if (targetId == "closeAboutButton") {
+    } else if (targetId == _ID_CLOSE_BUTTON_ABOUT) {
         event.preventDefault();
         closeAboutForm();
     }
@@ -595,22 +629,22 @@ function clickEventHandler (event) {
 function keydownEventHandler (event) {
     let keyPressed = event.key;
     let indexPressed = parseInt(keyPressed);
-    let maxIndex = document.getElementById("answer-list").childElementCount - 1;
+    let maxIndex = document.getElementById(_ID_ANSWER_LIST).childElementCount - 1;
 
     if ((indexPressed > -1) && (indexPressed <= maxIndex)) {
         event.preventDefault();
         resolveAnswer(indexPressed);
         
-    } else if ((event.target.id == "initials") && (event.keyCode == 15)) {           //  Carriage Return
+    } else if ((event.target.id == _ID_INITIALS) && (event.keyCode == 15)) {           //  Carriage Return
         event.preventDefault();
         closeEndForm();        
         
     } else if (event.keyCode == 27) {           //  ESCape key
-        if (document.getElementById("aboutForm").style.display != "none") {
+        if (document.getElementById(_ID_FORM_END).style.display != "none") {
             event.preventDefault();
             closeAboutForm();
 
-        } else if (document.getElementById("endForm").style.display != "none") {
+        } else if (document.getElementById(_ID_FORM_END).style.display != "none") {
             event.preventDefault();
             closeEndForm();
         }

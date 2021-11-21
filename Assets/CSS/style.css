@@ -60,7 +60,11 @@ footer {
   font-style: italic;
 }
 
-.show {
+.hidden {
+  display: none;
+}
+
+.shown-block {
   display: block;
 }
 

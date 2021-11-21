@@ -94,6 +94,7 @@ var _pictureWidth = _PICTURE_WIDTH;
 
 //  Initializes game variables and starts game clock.
 function beginGame() {
+    let lineToShow = document.getElementById("line-bottom");
     _questionArray = initQuestionList();
     _pictureArray = initPictureList();
 
@@ -103,6 +104,7 @@ function beginGame() {
     _userScore = 0;
     _questionTimer = 0;
 
+    lineToShow.className = "shown-block";
     renderQuestion(_questionIndex);
     _intervalTimer = setInterval(() => {secondsTimer();}, _1SECOND);
 }
@@ -154,6 +156,10 @@ function endGame() {
 
     let tagQuestion = document.getElementById("question-text");
     tagQuestion.textContent = "";
+
+    let lineToHide = document.getElementById("line-bottom");
+    lineToHide.className = "hidden";
+    
     clearPicture();
     clearAnswerList();
 
@@ -298,16 +304,19 @@ function renderPicture (pictureID, caption, location) {
 
     if (pictureFilepath != "") {
         let imgFile = new File([], pictureFilepath);
-        let pictureBlock, pictureCaption;
+        let pictureBlock, pictureCaption, pictureLine;
 
         if (!location || (location == _LOCATION_INDEX_TOP) || (location.toString()[0].toUpperCase() == "T")) {
             pictureBlock = document.getElementById("picture-block-top");
             pictureCaption = document.getElementById("picture-caption-top");
+            pictureLine = document.getElementById("picture-line-top");
+
         } else {
             document.getElementById("picture-bottom").style.marginBottom = "25px";
-
+            
             pictureBlock = document.getElementById("picture-block-bottom");
             pictureCaption = document.getElementById("picture-caption-bottom");
+            pictureLine = document.getElementById("picture-line-bottom");
         }
 
         if (imgFile) {
@@ -315,6 +324,7 @@ function renderPicture (pictureID, caption, location) {
             let imgCaption = null;
             
             imgElement.src = pictureFilepath;
+            pictureLine.className = "shown-block";
 
             if (pictureTitle != "") {
                 imgElement.title = pictureTitle;
@@ -434,9 +444,14 @@ function clearAnswerList () {
 function clearPicture () {
     let pictureBlockTop = document.getElementById("picture-block-top");
     let pictureCaptionTop = document.getElementById("picture-caption-top");
+    let pictureLineTop = document.getElementById("picture-line-top");
     let pictureFigureBottom = document.getElementById("picture-bottom");
     let pictureBlockBottom = document.getElementById("picture-block-bottom");
     let pictureCaptionBottom = document.getElementById("picture-caption-bottom");
+    let pictureLineBottom = document.getElementById("picture-line-bottom");
+
+    pictureLineTop.className = "hidden";
+    pictureLineBottom.className = "hidden";
 
     while (pictureBlockTop.hasChildNodes()) {
         pictureBlockTop.removeChild(pictureBlockTop.firstChild);
@@ -446,7 +461,6 @@ function clearPicture () {
     };
 
     pictureFigureBottom.style.marginBottom = "";
-
     while (pictureBlockBottom.hasChildNodes()) {
         pictureBlockBottom.removeChild(pictureBlockBottom.firstChild);
     };

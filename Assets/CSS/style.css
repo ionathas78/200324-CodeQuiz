@@ -396,6 +396,10 @@ opacity: 1;
     max-width: 95%;
   }
 
+  img {
+    max-width: 95%;
+  }
+
   .nav-head {
     padding: 0.5vw 1vw;
     line-height: 3.6vw;

@@ -60,7 +60,11 @@ footer {
   font-style: italic;
 }
 
-.show {
+.hidden {
+  display: none;
+}
+
+.shown-block {
   display: block;
 }
 
@@ -386,6 +390,10 @@ opacity: 1;
   nav li {
     font-size: 2.4vw;
     padding: 1vw 5vw;
+  }
+
+  img {
+    max-width: 95%;
   }
 
   img {

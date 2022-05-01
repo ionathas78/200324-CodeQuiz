@@ -65,6 +65,10 @@ footer {
   font-style: italic;
 }
 
+.small-font {
+  font-size: smaller;
+}
+
 .hidden {
   display: none;
 }
@@ -316,46 +320,46 @@ footer {
 }
 /* Hide the Popup form */
 .form-popup {
-display: none;
-position: fixed;
-left: 36%;
-top: 22%;
-transform: translate(-45%,5%);
-font-family: 'Baloo Chettan 2', sans-serif;
-box-shadow: 5px 7px 3px #666;
-z-index: 9;
+  display: none;
+  position: fixed;
+  left: 36%;
+  top: 22%;
+  transform: translate(-45%,5%);
+  font-family: 'Baloo Chettan 2', sans-serif;
+  box-shadow: 5px 7px 3px #666;
+  z-index: 9;
 }
 /* Styles for the form container */
 .form-container {
-max-width: 400px;
-min-width: 200px;
-padding: 20px;
-background-color: #eef;
+  max-width: 400px;
+  min-width: 200px;
+  padding: 20px;
+  background-color: #eef;
 }
 /* input fields */
 .form-container input {
-width: 60px;
-padding: 10px;
-margin: 5px;
-margin-right: 10px;
-border: none;
-background: #fff;
+  width: 60px;
+  padding: 10px;
+  margin: 5px;
+  margin-right: 10px;
+  border: none;
+  background: #fff;
 }
 /* When the inputs get focus, do something */
 .form-container input:focus {
-background-color: #ddd;
-outline: none;
+  background-color: #ddd;
+  outline: none;
 }
 /* Style submit/login button */
 .form-container .pop-btn {
-background-color: #4ad138;
-color: #fff;
-padding: 12px 20px;
-border: none;
-cursor: pointer;
-width: 100%;
-margin-bottom:10px;
-opacity: 0.8;
+  background-color: #4ad138;
+  color: #fff;
+  padding: 12px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:10px;
+  opacity: 0.8;
 }
 /* Style input box and label */
 .form-container .input-container {
@@ -379,7 +383,7 @@ opacity: 0.8;
 }
 /* Hover effects for buttons */
 .form-container .pop-btn:hover {
-opacity: 1;
+  opacity: 1;
 }
 
 /*          -- Media Queries --        */
@@ -395,10 +399,6 @@ opacity: 1;
   nav li {
     font-size: 2.4vw;
     padding: 1vw 5vw;
-  }
-
-  img {
-    max-width: 95%;
   }
 
   img {

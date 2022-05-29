@@ -49,6 +49,24 @@ footer {
     width: 100%;
 }
 
+.answer-correct {
+  background-color: #336633;
+  color: #33ff33;
+  font-weight: bold;
+}
+
+.answer-wrong {
+  background-color: #663333;
+  color: #cccc33;
+  font-weight: bold;
+  font-style: italic;
+}
+
+.answer-hide {
+  background-color: rgba(0, 0, 0, 0);
+  visibility: hidden;
+}
+
 .bolder {
   font-weight: bolder;
 }

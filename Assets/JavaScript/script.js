@@ -11,43 +11,10 @@ const _TIME_SCOREPENALTY = 100;
 const _MIN_SCOREPENALTY = -250;
 const _CORRECT_TIMEBONUS = 1;
 const _INCORRECT_TIMEPENALTY = 3;
+const _TAG_DISPLAYTIMER = 5000;
 
 const _1SECOND = 1000;
 const _LOCALSTORAGE_NAME = "topTenList";
-
-const _ID_GAME_TIMER = "game-timer";
-const _ID_GAME_SCORE = "game-score";
-const _ID_LINE_BOTTOM = "line-bottom";
-const _ID_QUESTION_TEXT = "question-text";
-const _ID_QUESTION_NUMBER = "question-number";
-const _ID_PICTUREBLOCK_TOP = "picture-block-top";
-const _ID_PICTURECAPTION_TOP = "picture-caption-top";
-const _ID_PICTURELINE_TOP = "picture-line-top";
-const _ID_PICTURE_BOTTOM = "picture-bottom";
-const _ID_PICTUREBLOCK_BOTTOM = "picture-block-bottom";
-const _ID_PICTURECAPTION_BOTTOM = "picture-caption-bottom";
-const _ID_PICTURELINE_BOTTOM = "picture-line-bottom";
-const _ID_STATUS_TEXT = "status-text";
-const _ID_ANSWER_LIST = "answer-list";
-const _ID_TOPTEN = "top-ten";
-const _ID_SCORE_DISPLAY = "score-display";
-const _ID_INITIALS = "initials";
-const _ID_ABOUT_LINK = "about-link";
-const _ID_CLOSE_BUTTON = "close-button";
-const _ID_CLOSE_BUTTON_ABOUT = "close-about-button";
-const _ID_START_BUTTON_FLASH = "start-button-0p5";
-const _ID_START_BUTTON = "start-button-1p0";
-const _ID_START_BUTTON_EXTENDED = "start-button-2p0";
-
-const _ID_FORM_START = "start-form";
-const _ID_FORM_END = "end-form";
-const _ID_FORM_ABOUT = "about-form";
-
-const _CLASS_SHOWN = "shown-block";
-const _CLASS_HIDDEN = "hidden";
-const _CLASS_ANSWER = "answer-item";
-const _CLASS_ANSWER_EVEN = "answer-item-even";
-const _CLASS_ANSWER_ODD = "answer-item-odd";
 
 var _clickListener, _keydownListener
 var _intervalTimer;
@@ -64,8 +31,8 @@ var _masterTimer = _GAME_STARTTIME_SECONDS;
 var _timeMultiplier = _GAME_TIMEX_SHORT;
 var _questionTimer = 0;
 
-var _timerTag = document.getElementById(_ID_GAME_TIMER);
-var _scoreTag = document.getElementById(_ID_GAME_SCORE);
+var _timerTag = document.getElementById("game-timer");
+var _scoreTag = document.getElementById("game-score");
 
 //  these and the functionList() function from the questionSet module.
 var _questionName = _QUESTION_NAME;
@@ -85,6 +52,14 @@ var _pictureDefaultCaption = _PICTURE_CAPTION;
 var _pictureDefaultPath = _DEFAULT_PATH;
 var _pictureHeight = _PICTURE_HEIGHT;
 var _pictureWidth = _PICTURE_WIDTH;
+var _tagTimer;
+
+//  **  Logic
+
+openStartForm();
+
+_clickListener = document.addEventListener("click", clickEventHandler);
+_keydownListener = document.addEventListener("keydown", keydownEventHandler);
 
 
 /*
@@ -126,9 +101,10 @@ var _pictureWidth = _PICTURE_WIDTH;
 
 // }
 
-//  Initializes game variables and starts game clock.
+/**
+ * Initializes game variables and starts game clock.
+ */
 function beginGame() {
-    let lineToShow = document.getElementById(_ID_LINE_BOTTOM);
     _questionArray = initQuestionList();
     _pictureArray = initPictureList();
 
@@ -138,12 +114,14 @@ function beginGame() {
     _userScore = 0;
     _questionTimer = 0;
 
-    lineToShow.className = _CLASS_SHOWN;
     renderQuestion(_questionIndex);
     _intervalTimer = setInterval(() => {secondsTimer();}, _1SECOND);
 }
 
-//  Sets up the list of questions to ask.
+/**
+ * Sets up the list of questions to ask.
+ * @returns Shuffled question array
+ */
 function initQuestionList () {
     let returnArray = [];
 
@@ -168,6 +146,10 @@ function initQuestionList () {
     return returnArray;
 }
 
+/**
+ * Sets up the images to use.
+ * @returns Picture array
+ */
 function initPictureList() {
     let pictures = pictureList();
     let returnArray = [];
@@ -185,21 +167,24 @@ function initPictureList() {
     return returnArray;
 }
 
+/**
+ * Clear the window and end the game
+ */
 function endGame() {
     let msgEnd = "";
 
-    let tagQuestion = document.getElementById(_ID_QUESTION_TEXT);
+    let tagQuestion = document.getElementById("question-text");
     tagQuestion.textContent = "";
-
-    let lineToHide = document.getElementById(_ID_LINE_BOTTOM);
-    lineToHide.className = _CLASS_HIDDEN;
-    
     clearPicture();
     clearAnswerList();
 
     openEndForm();
 }
 
+/**
+ * Set up a new Top Ten list
+ * @returns Top Ten array
+ */
 function initTopTen() {
     var defaultTopTen = [
         {name: "ZUL", score: 10000},
@@ -219,6 +204,10 @@ function initTopTen() {
     return defaultTopTen;
 }
 
+/**
+ * Checks to see if the Top Ten has room; if not, checks if _userScore places in the Top Ten
+ * @returns True if the score ranks within the Top Ten; False if it does not.
+ */
 function isInTopTen () {
     let returnValue = false;
 
@@ -245,6 +234,10 @@ function isInTopTen () {
     return returnValue;
 }
 
+/**
+ * Adds given name and _userScore to the Top Ten
+ * @param {String} userInitials Given User Name
+ */
 function addToTopTen (userInitials) {
     let newHiScore = {name: userInitials, score: _userScore};
     let topTenToStore;
@@ -260,7 +253,10 @@ function addToTopTen (userInitials) {
     localStorage.setItem(_LOCALSTORAGE_NAME, topTenToStore);
 }
 
-//  Redraws the screen and displays the question in targetIndex.
+/**
+ * Redraws the screen and displays the question in targetIndex
+ * @param {Integer} targetIndex Index of question to use
+ */
 function renderQuestion (targetIndex) {
     let questionObject = _questionArray[targetIndex];
     let correctIndex = questionObject[_answerName];
@@ -271,8 +267,8 @@ function renderQuestion (targetIndex) {
 
     renderPicture(questionObject[_questionPicture], questionObject[_questionCaption], questionObject[_questionPictureLocation]);
     
-    let tagQuestion = document.getElementById(_ID_QUESTION_TEXT);
-    let questionNumber = document.getElementById(_ID_QUESTION_NUMBER);
+    let tagQuestion = document.getElementById("question-text");
+    let questionNumber = document.getElementById("question-number");
 
     let answerIndex = 0;
     _answerArray = [];
@@ -295,7 +291,12 @@ function renderQuestion (targetIndex) {
     _answerArray.forEach(element => addListAnswer(element));
 };
 
-//  Redraws the screen and displays the picture specified
+/**
+ * Redraws the screen and displays the picture specified
+ * @param {String} pictureID Picture unique identifier
+ * @param {String} caption Caption to display under image, if not default
+ * @param {Integer} location Position in which to place the image (i.e., above or below the question)
+ */
 function renderPicture (pictureID, caption, location) {
     clearPicture();
 
@@ -338,19 +339,14 @@ function renderPicture (pictureID, caption, location) {
 
     if (pictureFilepath != "") {
         let imgFile = new File([], pictureFilepath);
-        let pictureBlock, pictureCaption, pictureLine;
+        let pictureBlock, pictureCaption;
 
         if (!location || (location == _LOCATION_INDEX_TOP) || (location.toString()[0].toUpperCase() == "T")) {
-            pictureBlock = document.getElementById(_ID_PICTUREBLOCK_TOP);
-            pictureCaption = document.getElementById(_ID_PICTURECAPTION_TOP);
-            pictureLine = document.getElementById(_ID_PICTURELINE_TOP);
-
+            pictureBlock = document.getElementById("picture-block-top");
+            pictureCaption = document.getElementById("picture-caption-top");
         } else {
-            document.getElementById(_ID_PICTURE_BOTTOM).style.marginBottom = "25px";
-            
-            pictureBlock = document.getElementById(_ID_PICTUREBLOCK_BOTTOM);
-            pictureCaption = document.getElementById(_ID_PICTURECAPTION_BOTTOM);
-            pictureLine = document.getElementById(_ID_PICTURELINE_BOTTOM);
+            pictureBlock = document.getElementById("picture-block-bottom");
+            pictureCaption = document.getElementById("picture-caption-bottom");
         }
 
         if (imgFile) {
@@ -358,7 +354,6 @@ function renderPicture (pictureID, caption, location) {
             let imgCaption = null;
             
             imgElement.src = pictureFilepath;
-            pictureLine.className = _CLASS_SHOWN;
 
             if (pictureTitle != "") {
                 imgElement.title = pictureTitle;
@@ -384,25 +379,29 @@ function renderPicture (pictureID, caption, location) {
     };
 }
 
-//  Given text, adds an answer to the bottom of the answer list.
+/**
+ * Given text, adds an answer item to the bottom of the answer list.
+ * @param {String} answerText Text of answer to add
+ * @returns null
+ */
 function addListAnswer (answerText) {
     if (!answerText || (answerText == "")) {
         return;
     }
 
     let newElement = document.createElement("li");
-    let answerList = document.getElementById(_ID_ANSWER_LIST);
+    let answerList = document.getElementById("answer-list");
 
     let newIndex = answerList.childElementCount;
     let idAnswer = _choicePrefix + newIndex;
-    let classAnswer = _CLASS_ANSWER;
+    let classAnswer = "answer-item answer-item-";
 
     if (newIndex % 2) {
         //  Item is odd
-        classAnswer += " " + _CLASS_ANSWER_ODD;
+        classAnswer += "odd";
     } else {
         //  Item is even
-        classAnswer += " " + _CLASS_ANSWER_EVEN;
+        classAnswer += "even";
     }
     
     newElement.id = idAnswer;
@@ -413,12 +412,15 @@ function addListAnswer (answerText) {
     answerList.appendChild(newElement);
 }
 
-//  Completes the question with answer in userPick
+/**
+ * Compares the user's chosen answer to _correctAnswer to determine accuracy
+ * @param {Integer} pickIndex Index of the selected answer
+ */
 function resolveAnswer(pickIndex) {
     let msgStatus = "";
 
-//    let pickAnswer = _questionArray[_questionIndex][_choicePrefix + pickIndex];
     let pickAnswer = _answerArray[pickIndex];
+    highlightCorrectAnswer(pickIndex);
     if (pickAnswer == _correctAnswer) {
         applyCorrectAnswer();
         msgStatus = "Correct!";
@@ -427,15 +429,20 @@ function resolveAnswer(pickIndex) {
         msgStatus = "Sorry, no. The answer was '" + _correctAnswer + ".'";
     }
 
-    _questionIndex++;
+    //  Pause for 0.25 seconds to display visual feedback, then progress to the next question
+    setTimeout(() => {
+        _questionIndex++;
 
-    renderQuestion(_questionIndex);
-    displayStatus(msgStatus);
+        renderQuestion(_questionIndex);
+        displayStatus(msgStatus);
 
-    _questionTimer = 0;
+        _questionTimer = 0;
+    }, 250);
 }
 
-//  Modifies variables for score and count
+/**
+ * Modifies variables for score and count after a correct answer
+ */
 function applyCorrectAnswer() {
     let questionScore = _BASE_QUESTIONSCORE - (_questionTimer * _TIME_SCOREPENALTY);
     if (questionScore > 0) {
@@ -446,7 +453,9 @@ function applyCorrectAnswer() {
     _masterTimer += _CORRECT_TIMEBONUS;
 }
 
-//  Modifies variables for score and count
+/**
+ * Modifies variables for score and count after an invalid answer
+ */
 function applyWrongAnswer() {
     let questionScore = Math.floor((_BASE_QUESTIONSCORE - (_questionTimer * _TIME_SCOREPENALTY)) * (-1/2))
     if (questionScore > _MIN_SCOREPENALTY) {
@@ -461,11 +470,32 @@ function applyWrongAnswer() {
     }
 }
 
-//  Clears the answer list
+/**
+ * Gives visual feedback on correct and wrong answers
+ * @param {Integer} pickIndex Index of the selected answer
+ */
+function highlightCorrectAnswer(pickIndex) {
+    let answerList = document.getElementById("answer-list");
+    
+    for (let i = 0; i < answerList.children.length; i++) {
+        let el = answerList.children[i];
+        if (_answerArray[i] == _correctAnswer) {
+            el.className = "answer-item answer-correct";
+        } else if (pickIndex == i) {
+            el.className = "answer-item answer-wrong";
+        } else {
+            el.className = "answer-item answer-hide";
+        }
+    }
+}
+
+/**
+ * Clears the answer list
+ */
 function clearAnswerList () {
-    let questionText = document.getElementById(_ID_QUESTION_TEXT);
-    let answerList = document.getElementById(_ID_ANSWER_LIST);
-    let tagStatus = document.getElementById(_ID_STATUS_TEXT);
+    let questionText = document.getElementById("question-text");
+    let answerList = document.getElementById("answer-list");
+    let tagStatus = document.getElementById("status-text");
 
     questionText.textContent = "  ";
     for (let i = answerList.childElementCount - 1; i > -1; i--) {
@@ -474,18 +504,14 @@ function clearAnswerList () {
     tagStatus.textContent = " ";
 }
 
-//  Clears the current image
+/**
+ * Clears the current image
+ */
 function clearPicture () {
-    let pictureBlockTop = document.getElementById(_ID_PICTUREBLOCK_TOP);
-    let pictureCaptionTop = document.getElementById(_ID_PICTURECAPTION_TOP);
-    let pictureLineTop = document.getElementById(_ID_PICTURELINE_TOP);
-    let pictureFigureBottom = document.getElementById(_ID_PICTURE_BOTTOM);
-    let pictureBlockBottom = document.getElementById(_ID_PICTUREBLOCK_BOTTOM);
-    let pictureCaptionBottom = document.getElementById(_ID_PICTURECAPTION_BOTTOM);
-    let pictureLineBottom = document.getElementById(_ID_PICTURELINE_BOTTOM);
-
-    pictureLineTop.className = _CLASS_HIDDEN;
-    pictureLineBottom.className = _CLASS_HIDDEN;
+    let pictureBlockTop = document.getElementById("picture-block-top");
+    let pictureCaptionTop = document.getElementById("picture-caption-top");
+    let pictureBlockBottom = document.getElementById("picture-block-bottom");
+    let pictureCaptionBottom = document.getElementById("picture-caption-bottom");
 
     while (pictureBlockTop.hasChildNodes()) {
         pictureBlockTop.removeChild(pictureBlockTop.firstChild);
@@ -494,7 +520,6 @@ function clearPicture () {
         pictureCaptionTop.removeChild(pictureCaptionTop.firstChild);
     };
 
-    pictureFigureBottom.style.marginBottom = "";
     while (pictureBlockBottom.hasChildNodes()) {
         pictureBlockBottom.removeChild(pictureBlockBottom.firstChild);
     };
@@ -503,20 +528,39 @@ function clearPicture () {
     };
 }
 
-//  Displays the given status
+/**
+ * Displays the given status
+ * @param {String} textToDisplay Text to apply to the Status tag
+ * @returns null
+ */
 function displayStatus (textToDisplay) {
     if (textToDisplay == "") {
         return;
     }
 
-    let tagStatus = document.getElementById(_ID_STATUS_TEXT);
+    let tagStatus = document.getElementById("status-text");
     tagStatus.textContent = textToDisplay;
 
-    // Add intervalTimer
+    //  Clear the status out after the millisecond interval defined in _TAG_DISPLAYTIMER
+    clearTimeout(_tagTimer)
+    _tagTimer = setTimeout(clearStatus, _TAG_DISPLAYTIMER);
+}
+
+/**
+ * Clears the status tag
+ */
+function clearStatus() {
+    let tagStatus = document.getElementById("status-text");
+    tagStatus.textContent = "";
 }
 
 //  **  Fisher-Yates (aka Knuth) shuffle from https://github.com/Daplie/knuth-shuffle
 // http://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+/**
+ * (Pseudo-)Randomly sorts the given array
+ * @param {Array} targetArray Array to randomize
+ * @returns targetArray, randomly sorted
+ */
 function shuffleArray(targetArray) {
     let currentIndex = targetArray.length
       , temporaryValue
@@ -537,114 +581,136 @@ function shuffleArray(targetArray) {
     }
 
     return targetArray;
-  }
+}
 
-  //    Set popup visibility for start form
+/**
+ * Visibilify start form and clear the answer list
+ */
 function openStartForm() {
-    document.getElementById(_ID_FORM_START).style.display="block";
+    document.getElementById("startForm").style.display="block";
     
-    document.getElementById(_ID_QUESTION_TEXT).textContent = "";
+    document.getElementById("question-text").textContent = "";
     clearAnswerList();
 }
 
+/**
+ * Invisibilify start form and begin the game
+ */
 function closeStartForm() {
-    document.getElementById(_ID_FORM_START).style.display="none";
+    document.getElementById("startForm").style.display="none";
     beginGame();
 }
 
+/**
+ * Visibilify about form
+ */
 function openAboutForm() {
-    document.getElementById(_ID_FORM_ABOUT).style.display = "block";
+    document.getElementById("aboutForm").style.display = "block";
 }
 
+/**
+ * Invisibilify about form
+ */
 function closeAboutForm() {
-    document.getElementById(_ID_FORM_ABOUT).style.display = "none";
+    document.getElementById("aboutForm").style.display = "none";
 }
 
-  //  Set popup visibility for end form
+
+/**
+ * Visibilify end form and ask for initials if user placed in Top Ten
+ */
 function openEndForm() {
-    document.getElementById(_ID_FORM_END).style.display="block";
-    document.getElementById(_ID_SCORE_DISPLAY).textContent = _userScore.toString();
+    document.getElementById("endForm").style.display="block";
+    document.getElementById("score-display").textContent = _userScore.toString();
 
     if (isInTopTen()) {
-        document.getElementById(_ID_TOPTEN).style.display = "block";    
+        document.getElementById("top-ten").style.display = "block";    
     } else {
-        document.getElementById(_ID_TOPTEN).style.display = "none";
+        document.getElementById("top-ten").style.display = "none";
     }
 }
 
-  //  Set popup visibility for end form
+/**
+ * Invisibilify end form and update Top Ten, if necessary, then open start form
+ */
 function closeEndForm() {
-    let userInitials = document.getElementById(_ID_INITIALS).value
+    let userInitials = document.getElementById("initials").value
     if (userInitials !== null) {
         addToTopTen(userInitials);
     }
-    document.getElementById(_ID_FORM_END).style.display="none";
+    document.getElementById("endForm").style.display="none";
 
     openStartForm();
 }
   
 //  **  Event Handlers
 
-//  Catches click events for the answer list
+/**
+ * Catches click events for the answer list
+ * @param {Object} event standard event handler parameter
+ */
 function clickEventHandler (event) {
     let targetElement = event.target;
     let targetClass = targetElement.className;
     let targetId = targetElement.id;
     
-    if (targetClass.indexOf(_CLASS_ANSWER) > -1) {
+    if (targetClass.indexOf("answer-item") > -1) {
         event.preventDefault();
         let pickIndex = targetElement.id.replace(_choicePrefix, "");
         resolveAnswer(pickIndex);
 
-    } else if (targetId == _ID_ABOUT_LINK) {
+    } else if (targetId == "aboutLink") {
         event.preventDefault();
         openAboutForm();
 
-    } else if (targetId == _ID_CLOSE_BUTTON) {
+    } else if (targetId == "closeButton") {
         event.preventDefault();
         closeEndForm();
 
-    } else if (targetId == _ID_START_BUTTON_FLASH) {
+    } else if (targetId == "start-button-0p5") {
         event.preventDefault();
         _timeMultiplier = _GAME_TIMEX_FLASH;
         closeStartForm();
 
-    } else if (targetId == _ID_START_BUTTON) {
+    } else if (targetId == "start-button-1p0") {
         event.preventDefault();
         _timeMultiplier = _GAME_TIMEX_SHORT;
         closeStartForm();
 
-    } else if (targetId == _ID_START_BUTTON_EXTENDED) {
+    } else if (targetId == "start-button-2p0") {
         event.preventDefault();
         _timeMultiplier = _GAME_TIMEX_EXTENDED;
         closeStartForm();
 
-    } else if (targetId == _ID_CLOSE_BUTTON_ABOUT) {
+    } else if (targetId == "closeAboutButton") {
         event.preventDefault();
         closeAboutForm();
     }
 }
 
-//  Catches keydown events that match up with the answer list
+/**
+ * Catches keydown events that match up with the answer list
+ * @param {Object} event standard event handler parameter
+ */
 function keydownEventHandler (event) {
     let keyPressed = event.key;
     let indexPressed = parseInt(keyPressed);
-    let maxIndex = document.getElementById(_ID_ANSWER_LIST).childElementCount - 1;
+    let maxIndex = document.getElementById("answer-list").childElementCount - 1;
 
     if ((indexPressed > -1) && (indexPressed <= maxIndex)) {
         event.preventDefault();
         resolveAnswer(indexPressed);
         
-    } else if ((event.target.id == _ID_INITIALS) && (event.keyCode == 15)) {           //  Carriage Return
+    } else if ((event.target.id == "initials") && (event.keyCode == 15)) {           //  Carriage Return
         event.preventDefault();
         closeEndForm();        
         
     } else if (event.keyCode == 27) {           //  ESCape key
-        if (document.getElementById(_ID_FORM_END).style.display != "none") {
+        if (document.getElementById("aboutForm").style.display != "none") {
             event.preventDefault();
             closeAboutForm();
 
-        } else if (document.getElementById(_ID_FORM_END).style.display != "none") {
+        } else if (document.getElementById("endForm").style.display != "none") {
             event.preventDefault();
             closeEndForm();
         }
@@ -652,7 +718,9 @@ function keydownEventHandler (event) {
 }
 
 
-//  Counts down the master timer and up the question timer
+/**
+ * Counts down the master timer and up the question timer
+ */
 function secondsTimer () {
     if (_masterTimer > 0) {
         _masterTimer--;
@@ -685,10 +753,3 @@ function secondsTimer () {
         _timerTag.style.color = "Red";
     }
 }
-
-//  **  Logic
-
-openStartForm();
-
-_clickListener = document.addEventListener("click", clickEventHandler);
-_keydownListener = document.addEventListener("keydown", keydownEventHandler);

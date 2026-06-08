@@ -605,14 +605,14 @@ function closeStartForm() {
  * Visibilify about form
  */
 function openAboutForm() {
-    document.getElementById("aboutForm").style.display = "block";
+    document.getElementById("about-form").style.display = "block";
 }
 
 /**
  * Invisibilify about form
  */
 function closeAboutForm() {
-    document.getElementById("aboutForm").style.display = "none";
+    document.getElementById("about-form").style.display = "none";
 }
 
 
@@ -620,7 +620,7 @@ function closeAboutForm() {
  * Visibilify end form and ask for initials if user placed in Top Ten
  */
 function openEndForm() {
-    document.getElementById("endForm").style.display="block";
+    document.getElementById("end-form").style.display="block";
     document.getElementById("score-display").textContent = _userScore.toString();
 
     if (isInTopTen()) {

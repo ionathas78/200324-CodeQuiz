@@ -659,11 +659,11 @@ function clickEventHandler (event) {
         let pickIndex = targetElement.id.replace(_choicePrefix, "");
         resolveAnswer(pickIndex);
 
-    } else if (targetId == "aboutLink") {
+    } else if (targetId == "about-link") {
         event.preventDefault();
         openAboutForm();
 
-    } else if (targetId == "closeButton") {
+    } else if (targetId == "close-button") {
         event.preventDefault();
         closeEndForm();
 
@@ -682,7 +682,7 @@ function clickEventHandler (event) {
         _timeMultiplier = _GAME_TIMEX_EXTENDED;
         closeStartForm();
 
-    } else if (targetId == "closeAboutButton") {
+    } else if (targetId == "close-about-button") {
         event.preventDefault();
         closeAboutForm();
     }
@@ -706,11 +706,11 @@ function keydownEventHandler (event) {
         closeEndForm();        
         
     } else if (event.keyCode == 27) {           //  ESCape key
-        if (document.getElementById("aboutForm").style.display != "none") {
+        if (document.getElementById("about-form").style.display != "none") {
             event.preventDefault();
             closeAboutForm();
 
-        } else if (document.getElementById("endForm").style.display != "none") {
+        } else if (document.getElementById("end-form").style.display != "none") {
             event.preventDefault();
             closeEndForm();
         }

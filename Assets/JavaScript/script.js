@@ -587,7 +587,7 @@ function shuffleArray(targetArray) {
  * Visibilify start form and clear the answer list
  */
 function openStartForm() {
-    document.getElementById("startForm").style.display="block";
+    document.getElementById("start-form").style.display="block";
     
     document.getElementById("question-text").textContent = "";
     clearAnswerList();
@@ -597,7 +597,7 @@ function openStartForm() {
  * Invisibilify start form and begin the game
  */
 function closeStartForm() {
-    document.getElementById("startForm").style.display="none";
+    document.getElementById("start-form").style.display="none";
     beginGame();
 }
 
